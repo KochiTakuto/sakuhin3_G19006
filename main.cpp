@@ -395,6 +395,7 @@ BOOL MY_CHECK_RECT_COLL(RECT, RECT);	//領域の当たり判定をする関数
 //プログラムで最初に実行される関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
+	SetOutApplicationLogValidFlag(FALSE);               //Log.txtを出力しない
 	ChangeWindowMode(TRUE);								//ウィンドウモードに設定
 	SetGraphMode(GAME_WIDTH, GAME_HEIGHT, GAME_COLOR);	//指定の数値でウィンドウを表示する
 	SetWindowStyleMode(GAME_WINDOW_BAR);				//タイトルバーはデフォルトにする

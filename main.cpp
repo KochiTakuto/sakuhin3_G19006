@@ -343,6 +343,7 @@ VOID MY_ALL_KEYDOWN_UPDATE(VOID);	//キーの入力状態を更新する
 BOOL MY_KEY_DOWN(int);				//キーを押しているか、キーコードで判断する
 BOOL MY_KEY_UP(int);				//キーを押し上げたか、キーコードで判断する
 BOOL MY_KEYDOWN_KEEP(int, int);		//キーを押し続けているか、キーコードで判断する
+BOOL MY_KEY_PUSH(int KEY_INPUT_);	//キーをプッシュしたか、キーコードで判断する
 
 VOID MY_MOUSE_UPDATE(VOID);			//マウスの入力情報を更新する
 BOOL MY_MOUSE_DOWN(int);			//ボタンを押しているか、マウスコードで判断する
@@ -645,6 +646,22 @@ BOOL MY_KEYDOWN_KEEP(int KEY_INPUT_, int DownTime)
 	}
 }
 
+//キーをプッシュしたか、キーコードで判断する
+//引　数：int：キーコード：KEY_INPUT_???
+BOOL MY_KEY_PUSH(int KEY_INPUT_)
+{
+	if (OldAllKeyState[KEY_INPUT_] == 0
+		&& AllKeyState[KEY_INPUT_] >= 1)
+	{
+		return TRUE;	//キーをプッシュした(押し続けても１回のみ発生)
+	}
+	else
+	{
+		return FALSE;	//キーをプッシュしていないか押し続けている
+	}
+}
+
+
 //マウスの入力情報を更新する
 VOID MY_MOUSE_UPDATE(VOID)
 {
@@ -809,7 +826,7 @@ VOID MY_START_PROC(VOID)
 	}
 
 	//エンターキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_RETURN) == TRUE)
+	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_TITLE.handle) != 0)
@@ -1001,14 +1018,14 @@ VOID MY_MENU(VOID)
 //メニュー画面の処理
 VOID MY_MENU_PROC(VOID)
 {
-	//スペースキーを押したら、ステージ選択シーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_SPACE) == TRUE)
+	//エンターキーを押したら、ステージ選択シーンへ移動する
+	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
 		GameScene = GAME_SCENE_CHOICE;
 	}
 
 	//エスケープキーを押したら、設定シーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE) == TRUE)
+	if (MY_KEY_PUSH(KEY_INPUT_ESCAPE) == TRUE)
 	{
 		GameScene = GAME_SCENE_SETUP;
 	}
@@ -1022,7 +1039,7 @@ VOID MY_MENU_DRAW(VOID)
 	//赤の四角を描画
 	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(255, 0, 0), TRUE);
 
-	DrawString(0, 0, "メニュー画面(スペースキー(ステージ選択画面)エスケープキー(設定)を押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(255, 255, 255));
 	return;
 }
 
@@ -1039,13 +1056,13 @@ VOID MY_CHOICE(VOID)
 VOID MY_CHOICE_PROC(VOID)
 {
 	//エンターキーを押したら、プレイシーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_RETURN) == TRUE)
+	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
 		GameScene = GAME_SCENE_PLAY;
 	}
 
-	//エスケープキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE) == TRUE)
+	//スペースキーを押したら、メニューシーンへ移動する
+	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
 	{
 		GameScene = GAME_SCENE_MENU;
 	}
@@ -1059,7 +1076,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	//青の四角を描画
 	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(0, 255, 0), TRUE);
 
-	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)エスケープキー(メニュー画面)を押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(255, 255, 255));
 	return;
 }
 
@@ -1075,8 +1092,8 @@ VOID MY_SETUP(VOID)
 //設定画面の処理
 VOID MY_SETUP_PROC(VOID)
 {
-	//エンターキーを押したら、メニューシーンへ移動する(戻る)
-	if (MY_KEY_DOWN(KEY_INPUT_RETURN) == TRUE)
+	//スペースキーを押したら、メニューシーンへ移動する(戻る)
+	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
 	{
 		GameScene = GAME_SCENE_MENU;
 	}
@@ -1090,7 +1107,7 @@ VOID MY_SETUP_DRAW(VOID)
 	//赤の四角を描画
 	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(255, 0, 0), TRUE);
 
-	DrawString(0, 0, "設定画面(エンターキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(255, 255, 255));
 	return;
 }
 
@@ -1552,8 +1569,8 @@ VOID MY_END(VOID)
 //エンド画面の処理
 VOID MY_END_PROC(VOID)
 {
-	//スペースキーを押したら、クリアシーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_SPACE) == TRUE)
+	//エンターキーを押したら、クリアシーンへ移動する
+	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_COMP.handle) != 0)
@@ -1674,7 +1691,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面(スペースキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(255, 255, 255));
 	return;
 }
 
@@ -1691,7 +1708,7 @@ VOID MY_CLEAR(VOID)
 VOID MY_CLEAR_PROC(VOID)
 {
 	//エンターキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_DOWN(KEY_INPUT_RETURN) == TRUE)
+	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
 		GameScene = GAME_SCENE_MENU;
 	}

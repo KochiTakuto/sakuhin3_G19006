@@ -841,7 +841,7 @@ VOID MY_START_PROC(VOID)
 			StopSoundMem(BGM_TITLE.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを非表示
 
 		//プレイヤーの中心位置を計算する
 		player.CenterX = startPt.x;
@@ -1043,7 +1043,7 @@ VOID MY_MENU_PROC(VOID)
 			StopSoundMem(BGM_MENU.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//ゲームの終了状態を初期化する
 		GameEndKind = GAME_END_FAIL;
@@ -1060,7 +1060,7 @@ VOID MY_MENU_PROC(VOID)
 			StopSoundMem(BGM_MENU.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//ゲームの終了状態を初期化する
 		GameEndKind = GAME_END_FAIL;
@@ -1111,7 +1111,7 @@ VOID MY_CHOICE_PROC(VOID)
 			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//ゲームの終了状態を初期化する
 		GameEndKind = GAME_END_FAIL;
@@ -1128,7 +1128,7 @@ VOID MY_CHOICE_PROC(VOID)
 			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//ゲームの終了状態を初期化する
 		GameEndKind = GAME_END_FAIL;
@@ -1180,7 +1180,7 @@ VOID MY_SETUP_PROC(VOID)
 			StopSoundMem(BGM_SETUP.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//ゲームの終了状態を初期化する
 		GameEndKind = GAME_END_FAIL;
@@ -1262,7 +1262,7 @@ VOID MY_PLAY_PROC(VOID)
 			SetMousePoint(R_ClickPt.x, R_ClickPt.y);
 
 			//マウスを非表示にする。
-			SetMouseDispFlag(FALSE);
+			SetMouseDispFlag(TRUE);
 		}
 	}
 

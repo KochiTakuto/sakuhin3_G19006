@@ -841,7 +841,7 @@ VOID MY_START_PROC(VOID)
 			StopSoundMem(BGM_TITLE.handle);	//BGMを止める
 		}
 
-		SetMouseDispFlag(TRUE);			//マウスカーソルを非表示
+		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//プレイヤーの中心位置を計算する
 		player.CenterX = startPt.x;
@@ -873,20 +873,26 @@ VOID MY_START_PROC(VOID)
 		GameScene = GAME_SCENE_MENU;
 	}
 
+	////タイトルロゴを拡大
+	//if (ImageTitleROGO.rate < ImageTitleROGO.rateMAX)
+	//{
+	//	ImageTitleROGO.rate += IMAGE_TITLE_ROGO_ROTA;
+	//}
+
+	////タイトルロゴを移動
+	//if (ImageTitleROGO.image.x < GAME_WIDTH / 2)
+	//{
+	//	ImageTitleROGO.image.x += IMAGE_TITLE_ROGO_X_SPEED;
+	//}
+
 	//タイトルロゴを拡大
 	if (ImageTitleROGO.rate < ImageTitleROGO.rateMAX)
 	{
 		ImageTitleROGO.rate += IMAGE_TITLE_ROGO_ROTA;
 	}
-
-	//タイトルロゴを移動
-	if (ImageTitleROGO.image.x < GAME_WIDTH / 2)
-	{
-		ImageTitleROGO.image.x += IMAGE_TITLE_ROGO_X_SPEED;
-	}
 	else
 	{
-		//タイトルロゴが移動しきったら
+		//タイトルロゴが拡大しきったら
 
 		//スタートを点滅
 		if (ImageTitleSTART.Cnt < ImageTitleSTART.CntMAX)
@@ -1840,8 +1846,9 @@ BOOL MY_LOAD_IMAGE(VOID)
 		return FALSE;
 	}
 	GetGraphSize(ImageTitleROGO.image.handle, &ImageTitleROGO.image.width, &ImageTitleROGO.image.height);	//画像の幅と高さを取得
-	ImageTitleROGO.image.x = 230;							//光っている部分から描画したい
-	ImageTitleROGO.image.y = GAME_HEIGHT / 2;				//中央寄せ
+	//ImageTitleROGO.image.x = 230;							//光っている部分から描画したい
+	ImageTitleROGO.image.y = GAME_HEIGHT / 2;				//中央寄せ(縦)
+	ImageTitleROGO.image.x = GAME_WIDTH / 2;				//中央寄せ(横)
 	ImageTitleROGO.angle = DX_PI * 2;						//回転率
 	ImageTitleROGO.angleMAX = DX_PI * 2;					//回転率MAX
 	ImageTitleROGO.rate = 0.0;								//拡大率

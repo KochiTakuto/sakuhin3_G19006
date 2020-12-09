@@ -3,13 +3,13 @@
 #include "resource.h"
 
 //マクロ定義
-#define GAME_WIDTH			800	//画面の横の大きさ
-#define GAME_HEIGHT			600	//画面の縦の大きさ
-#define GAME_COLOR			32	//画面のカラービット
+#define GAME_WIDTH			1920	//画面の横の大きさ(800)
+#define GAME_HEIGHT			1080	//画面の縦の大きさ(600)
 
-#define GAME_WINDOW_BAR		0	//タイトルバーはデフォルトにする
+#define GAME_WINDOW_BAR		0				//タイトルバーはデフォルト
 #define GAME_WINDOW_NAME	"Sea Protecter"	//ウィンドウのタイトル
 
+#define GAME_COLOR			32	//画面のカラービット
 #define GAME_FPS			60	//FPSの数値	
 
 //マウスのボタン
@@ -34,7 +34,7 @@
 #define IMAGE_BACK_PATH			TEXT(".\\IMAGE\\Sea.jpg")		//背景の画像
 #define IMAGE_PLAYER_PATH		TEXT(".\\IMAGE\\イルカ.png")	//プレイヤーの画像
 
-#define IMAGE_TITLE_BK_PATH			TEXT(".\\IMAGE\\タイトル海.jpg")		//タイトル背景の画像
+#define IMAGE_TITLE_BK_PATH			TEXT(".\\IMAGE\\タイトル海.jpg")	//タイトル背景の画像
 #define IMAGE_TITLE_ROGO_PATH		TEXT(".\\IMAGE\\タイトルロゴ.png")	//タイトルロゴの画像
 #define IMAGE_TITLE_ROGO_ROTA		0.005		//拡大率
 #define IMAGE_TITLE_ROGO_ROTA_MAX	1.0			//拡大率MAX
@@ -52,7 +52,7 @@
 #define IMAGE_END_FAIL_CNT_MAX	30			//点滅カウンタMAX
 
 #define IMAGE_BACK_REV_PATH		TEXT(".\\IMAGE\\Sea.jpg")	//背景の画像
-#define IMAGE_BACK_NUM			4								//背景の画像の数
+#define IMAGE_BACK_NUM			4							//背景の画像の数
 
 //弾の設定
 #define TAMA_CHANGE_MAX		 5	//5フレーム目で弾の画像を変える
@@ -79,7 +79,7 @@
 #define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")				//ショット音
 
 #define MUSIC_BGM_TITLE_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//タイトルのBGM
-#define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニューのBGM
+#define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニュー;のBGM
 #define MUSIC_BGM_CHOICE_PATH	TEXT(".\\MUSIC\\レトロシューティング.mp3")	//ステージ選択画面のBGM
 #define MUSIC_BGM_SETUP_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//設定のBGM
 #define MUSIC_BGM_COMP_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//コンプリートBGM
@@ -402,7 +402,7 @@ BOOL MY_CHECK_RECT_COLL(RECT, RECT);	//領域の当たり判定をする関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	SetOutApplicationLogValidFlag(FALSE);               //Log.txtを出力しない
-	ChangeWindowMode(TRUE);								//ウィンドウモードに設定
+	ChangeWindowMode(FALSE);							//全画面モードに設定(元：ウィンドウモード)
 	SetGraphMode(GAME_WIDTH, GAME_HEIGHT, GAME_COLOR);	//指定の数値でウィンドウを表示する
 	SetWindowStyleMode(GAME_WINDOW_BAR);				//タイトルバーはデフォルトにする
 	SetMainWindowText(TEXT(GAME_WINDOW_NAME));			//ウィンドウのタイトルの文字
@@ -1009,7 +1009,7 @@ VOID MY_START_DRAW(VOID)
 		DrawGraph(ImageTitleSTART.image.x, ImageTitleSTART.image.y, ImageTitleSTART.image.handle, TRUE);
 	}
 
-	DrawString(0, 0, "スタート画面(エンターキーを押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "スタート画面(エンターキーを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1077,7 +1077,7 @@ VOID MY_MENU_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1146,7 +1146,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1198,7 +1198,7 @@ VOID MY_SETUP_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1782,7 +1782,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1810,7 +1810,7 @@ VOID MY_CLEAR_PROC(VOID)
 //クリア画面の描画
 VOID MY_CLEAR_DRAW(VOID)
 {
-	DrawString(0, 0, "クリア画面(エンターーキーを押して下さい)", GetColor(0, 0, 0));
+	DrawString(0, 0, "クリア画面(エンターーキーを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 

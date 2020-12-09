@@ -79,6 +79,9 @@
 #define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")				//ショット音
 
 #define MUSIC_BGM_TITLE_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//タイトルのBGM
+#define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニューのBGM
+#define MUSIC_BGM_CHOICE_PATH	TEXT(".\\MUSIC\\レトロシューティング.mp3")	//ステージ選択画面のBGM
+#define MUSIC_BGM_SETUP_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//設定のBGM
 #define MUSIC_BGM_COMP_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//コンプリートBGM
 #define MUSIC_BGM_FAIL_PATH		TEXT(".\\MUSIC\\衛星の夜.mp3")				//フォールトBGM
 
@@ -303,6 +306,9 @@ CHARA player;		//ゲームのキャラ
 MUSIC BGM;			//ゲームのBGM
 
 MUSIC BGM_TITLE;	//タイトルのBGM
+MUSIC BGM_MENU;		//メニューのBGM
+MUSIC BGM_CHOICE;	//ステージ選択画面のBGM
+MUSIC BGM_SETUP;	//設定のBGM
 MUSIC BGM_COMP;		//コンプリートのBGM
 MUSIC BGM_FAIL;		//フォールトのBGM
 
@@ -1003,7 +1009,7 @@ VOID MY_START_DRAW(VOID)
 		DrawGraph(ImageTitleSTART.image.x, ImageTitleSTART.image.y, ImageTitleSTART.image.handle, TRUE);
 	}
 
-	DrawString(0, 0, "スタート画面(エンターキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "スタート画面(エンターキーを押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1019,15 +1025,46 @@ VOID MY_MENU(VOID)
 //メニュー画面の処理
 VOID MY_MENU_PROC(VOID)
 {
+	//BGMが流れていないなら
+	if (CheckSoundMem(BGM_MENU.handle) == 0)
+	{
+		//(変更,BGMの音量)
+		//BGMの音量を下げる
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_MENU.handle);	//75%の音量にする
+		PlaySoundMem(BGM_MENU.handle, DX_PLAYTYPE_LOOP);
+	}
+
 	//エンターキーを押したら、ステージ選択シーンへ移動する
 	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
+		//BGMが流れているなら
+		if (CheckSoundMem(BGM_MENU.handle) != 0)
+		{
+			StopSoundMem(BGM_MENU.handle);	//BGMを止める
+		}
+
+		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+
+		//ゲームの終了状態を初期化する
+		GameEndKind = GAME_END_FAIL;
+
 		GameScene = GAME_SCENE_CHOICE;
 	}
 
 	//エスケープキーを押したら、設定シーンへ移動する
 	if (MY_KEY_PUSH(KEY_INPUT_ESCAPE) == TRUE)
 	{
+		//BGMが流れているなら
+		if (CheckSoundMem(BGM_MENU.handle) != 0)
+		{
+			StopSoundMem(BGM_MENU.handle);	//BGMを止める
+		}
+
+		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+
+		//ゲームの終了状態を初期化する
+		GameEndKind = GAME_END_FAIL;
+
 		GameScene = GAME_SCENE_SETUP;
 	}
 
@@ -1037,10 +1074,10 @@ VOID MY_MENU_PROC(VOID)
 //メニュー画面の描画
 VOID MY_MENU_DRAW(VOID)
 {
-	//赤の四角を描画
-	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(255, 0, 0), TRUE);
+	//背景を描画
+	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1056,28 +1093,60 @@ VOID MY_CHOICE(VOID)
 //ステージ選択画面の処理
 VOID MY_CHOICE_PROC(VOID)
 {
+	//BGMが流れていないなら
+	if (CheckSoundMem(BGM_CHOICE.handle) == 0)
+	{
+		//(変更,BGMの音量)
+		//BGMの音量を下げる
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_CHOICE.handle);	//75%の音量にする
+		PlaySoundMem(BGM_CHOICE.handle, DX_PLAYTYPE_LOOP);
+	}
+
 	//エンターキーを押したら、プレイシーンへ移動する
 	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
 	{
+		//BGMが流れているなら
+		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
+		{
+			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
+		}
+
+		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+
+		//ゲームの終了状態を初期化する
+		GameEndKind = GAME_END_FAIL;
+
 		GameScene = GAME_SCENE_PLAY;
 	}
 
 	//スペースキーを押したら、メニューシーンへ移動する
 	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
 	{
+		//BGMが流れているなら
+		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
+		{
+			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
+		}
+
+		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+
+		//ゲームの終了状態を初期化する
+		GameEndKind = GAME_END_FAIL;
+
 		GameScene = GAME_SCENE_MENU;
 	}
 
 	return;
 }
 
+
 //ステージ選択画面の描画
 VOID MY_CHOICE_DRAW(VOID)
 {
-	//青の四角を描画
-	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(0, 255, 0), TRUE);
+	//背景を描画
+	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1093,22 +1162,43 @@ VOID MY_SETUP(VOID)
 //設定画面の処理
 VOID MY_SETUP_PROC(VOID)
 {
+	//BGMが流れていないなら
+	if (CheckSoundMem(BGM_SETUP.handle) == 0)
+	{
+		//(変更,BGMの音量)
+		//BGMの音量を下げる
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_SETUP.handle);	//75%の音量にする
+		PlaySoundMem(BGM_SETUP.handle, DX_PLAYTYPE_LOOP);
+	}
+
 	//スペースキーを押したら、メニューシーンへ移動する(戻る)
 	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
 	{
+		//BGMが流れているなら
+		if (CheckSoundMem(BGM_SETUP.handle) != 0)
+		{
+			StopSoundMem(BGM_SETUP.handle);	//BGMを止める
+		}
+
+		SetMouseDispFlag(FALSE);			//マウスカーソルを非表示
+
+		//ゲームの終了状態を初期化する
+		GameEndKind = GAME_END_FAIL;
+
 		GameScene = GAME_SCENE_MENU;
 	}
 
 	return;
 }
 
+
 //設定画面の描画
 VOID MY_SETUP_DRAW(VOID)
 {
-	//赤の四角を描画
-	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(255, 0, 0), TRUE);
+	//背景を描画
+	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1692,7 +1782,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1720,10 +1810,7 @@ VOID MY_CLEAR_PROC(VOID)
 //クリア画面の描画
 VOID MY_CLEAR_DRAW(VOID)
 {
-	//緑の四角を描画
-	DrawBox(10, 10, GAME_WIDTH - 10, GAME_HEIGHT - 10, GetColor(0, 0, 255), TRUE);
-
-	DrawString(0, 0, "クリア画面(エンターーキーを押して下さい)", GetColor(255, 255, 255));
+	DrawString(0, 0, "クリア画面(エンターーキーを押して下さい)", GetColor(0, 0, 0));
 	return;
 }
 
@@ -2028,6 +2115,37 @@ BOOL MY_LOAD_MUSIC(VOID)
 		MessageBox(GetMainWindowHandle(), MUSIC_BGM_TITLE_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
 		return FALSE;
 	}
+
+	//メニューのBGM
+	strcpy_s(BGM_MENU.path, MUSIC_BGM_MENU_PATH);				//パスの設定
+	BGM_MENU.handle = LoadSoundMem(BGM_MENU.path);				//読み込み
+	if (BGM_MENU.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), MUSIC_BGM_MENU_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+
+	//ステージ選択画面のBGM
+	strcpy_s(BGM_CHOICE.path, MUSIC_BGM_CHOICE_PATH);			//パスの設定
+	BGM_CHOICE.handle = LoadSoundMem(BGM_CHOICE.path);			//読み込み
+	if (BGM_CHOICE.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), MUSIC_BGM_CHOICE_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+
+	//設定のBGM
+	strcpy_s(BGM_SETUP.path, MUSIC_BGM_SETUP_PATH);				//パスの設定
+	BGM_SETUP.handle = LoadSoundMem(BGM_SETUP.path);				//読み込み
+	if (BGM_SETUP.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), MUSIC_BGM_SETUP_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+
 
 	//コンプリートBGM
 	strcpy_s(BGM_COMP.path, MUSIC_BGM_COMP_PATH);				//パスの設定

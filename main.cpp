@@ -351,10 +351,11 @@ BOOL MY_KEY_UP(int);				//キーを押し上げたか、キーコードで判断する
 BOOL MY_KEYDOWN_KEEP(int, int);		//キーを押し続けているか、キーコードで判断する
 BOOL MY_KEY_PUSH(int KEY_INPUT_);	//キーをプッシュしたか、キーコードで判断する
 
-VOID MY_MOUSE_UPDATE(VOID);			//マウスの入力情報を更新する
-BOOL MY_MOUSE_DOWN(int);			//ボタンを押しているか、マウスコードで判断する
-BOOL MY_MOUSE_UP(int);				//ボタンを押し上げたか、マウスコードで判断する
-BOOL MY_MOUSEDOWN_KEEP(int, int);	//ボタンを押し続けているか、マウスコードで判断する
+VOID MY_MOUSE_UPDATE(VOID);				//マウスの入力情報を更新する
+BOOL MY_MOUSE_DOWN(int);				//ボタンを押しているか、マウスコードで判断する
+BOOL MY_MOUSE_UP(int);					//ボタンを押し上げたか、マウスコードで判断する
+BOOL MY_MOUSEDOWN_KEEP(int, int);		//ボタンを押し続けているか、マウスコードで判断する
+BOOL MY_MOUSE_PUSH(int MOUSE_INPUT);	//ボタンをクリックしたか、マウスコードで判断する
 
 BOOL MY_FONT_INSTALL_ONCE(VOID);	//フォントをこのソフト用に、一時的にインストール
 VOID MY_FONT_UNINSTALL_ONCE(VOID);	//フォントをこのソフト用に、一時的にアンインストール
@@ -751,6 +752,21 @@ BOOL MY_MOUSEDOWN_KEEP(int MOUSE_INPUT_, int DownTime)
 	}
 }
 
+//マウスをクリックしたか、キーコードで判断する
+//引　数：int：マウスコード：MOUSE_INPUT_???
+BOOL MY_MOUSE_PUSH(int MOUSE_INPUT_)
+{
+	if (mouse.OldButton[MOUSE_INPUT_] == 0	//押す前は0かつ
+		&& mouse.Button[MOUSE_INPUT_] >= 1)	//現在押してるとき
+	{
+		return TRUE;	//キーをプッシュした(押し続けても１回のみ発生)
+	}
+	else
+	{
+		return FALSE;	//キーをプッシュしていないか押し続けている
+	}
+}
+
 //フォントをこのソフト用に、一時的にインストール
 BOOL MY_FONT_INSTALL_ONCE(VOID)
 {
@@ -832,8 +848,8 @@ VOID MY_START_PROC(VOID)
 		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	//エンターキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたら、メニューシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_TITLE.handle) != 0)
@@ -1015,7 +1031,7 @@ VOID MY_START_DRAW(VOID)
 		DrawGraph(ImageTitleSTART.image.x, ImageTitleSTART.image.y, ImageTitleSTART.image.handle, TRUE);
 	}
 
-	DrawString(0, 0, "スタート画面(エンターキーを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "スタート画面(左クリックを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1040,8 +1056,8 @@ VOID MY_MENU_PROC(VOID)
 		PlaySoundMem(BGM_MENU.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	//エンターキーを押したら、ステージ選択シーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたら、ステージ選択シーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_MENU.handle) != 0)
@@ -1057,8 +1073,8 @@ VOID MY_MENU_PROC(VOID)
 		GameScene = GAME_SCENE_CHOICE;
 	}
 
-	//エスケープキーを押したら、設定シーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_ESCAPE) == TRUE)
+	//右クリックしたら、設定シーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_MENU.handle) != 0)
@@ -1083,7 +1099,7 @@ VOID MY_MENU_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "メニュー画面(エンターキー(ステージ選択画面)　エスケープキー(設定)を押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "メニュー画面(左クリック(ステージ選択画面)　右クリック(設定)を押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1108,8 +1124,8 @@ VOID MY_CHOICE_PROC(VOID)
 		PlaySoundMem(BGM_CHOICE.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	//エンターキーを押したら、プレイシーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたら、プレイシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
@@ -1125,8 +1141,8 @@ VOID MY_CHOICE_PROC(VOID)
 		GameScene = GAME_SCENE_PLAY;
 	}
 
-	//スペースキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
+	//右クリックしたら、メニューシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
@@ -1152,7 +1168,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "ステージ選択画面(エンターキー(プレイ画面)スペースキー(メニュー画面)を押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "ステージ選択画面(左クリック(プレイ画面)右クリック(メニュー画面))", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1177,8 +1193,8 @@ VOID MY_SETUP_PROC(VOID)
 		PlaySoundMem(BGM_SETUP.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	//スペースキーを押したら、メニューシーンへ移動する(戻る)
-	if (MY_KEY_PUSH(KEY_INPUT_SPACE) == TRUE)
+	//右クリックしたらを押したら、メニューシーンへ移動する(戻る)
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_SETUP.handle) != 0)
@@ -1204,7 +1220,7 @@ VOID MY_SETUP_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "設定画面(スペースキーを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "設定画面(右クリックを押して下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1221,7 +1237,6 @@ VOID MY_PLAY(VOID)
 //プレイ画面の処理
 VOID MY_PLAY_PROC(VOID)
 {
-
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM.handle) == 0)
 	{
@@ -1229,7 +1244,7 @@ VOID MY_PLAY_PROC(VOID)
 		ChangeVolumeSoundMem(255 * 50 / 100, BGM.handle);	//50%の音量にする
 
 		//BGMを流す
-		//DX_PLAYTYPE_NORMAL:　ノーマル再生
+		//DX_PLAYTYPE_NORMAL:ノーマル再生
 		//DX_PLAYTYPE_BACK  : バックグラウンド再生
 		//DX_PLAYTYPE_LOOP  : ループ再生
 		PlaySoundMem(BGM.handle, DX_PLAYTYPE_LOOP);
@@ -1666,8 +1681,8 @@ VOID MY_END(VOID)
 //エンド画面の処理
 VOID MY_END_PROC(VOID)
 {
-	//エンターキーを押したら、クリアシーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたら、クリアシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//BGMが流れているなら
 		if (CheckSoundMem(BGM_COMP.handle) != 0)
@@ -1804,8 +1819,8 @@ VOID MY_CLEAR(VOID)
 //クリア画面の処理
 VOID MY_CLEAR_PROC(VOID)
 {
-	//エンターキーを押したら、メニューシーンへ移動する
-	if (MY_KEY_PUSH(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたら、メニューシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		GameScene = GAME_SCENE_MENU;
 	}

@@ -44,6 +44,7 @@
 #define IMAGE_TITLE_START_CNT_MAX	30			//点滅カウンタMAX(元は30)
 
 #define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージ選択ボタン.png")	//ステージ選択ボタンの画像
+#define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")	//ステージ選択ボタンの画像
 
 #define IMAGE_END_COMP_PATH		TEXT(".\\IMAGE\\クリア！.png")	//エンドコンプ画像
 #define IMAGE_END_COMP_CNT		1			//点滅カウンタ
@@ -300,6 +301,7 @@ IMAGE_ROTA ImageTitleROGO;				//タイトルロゴの画像
 IMAGE_BLINK ImageTitleSTART;			//タイトルスタートの画像
 
 IMAGE ImageStartButton;					//ステージ選択ボタンの画像
+IMAGE ImageSetupButton;					//設定ボタンの画像
 
 IMAGE_BLINK ImageEndCOMP;				//エンドコンプの画像
 IMAGE_BLINK ImageEndFAIL;				//エンドフォールの画像
@@ -1106,6 +1108,9 @@ VOID MY_MENU_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageStartButton.x, ImageStartButton.y, ImageStartButton.handle, TRUE);	//ステージ選択ボタンの描画
 
+	//背景を描画
+	DrawGraph(ImageSetupButton.x, ImageSetupButton.y, ImageSetupButton.handle, TRUE);	//設定ボタンの描画
+
 	DrawString(0, 0, "メニュー画面(左クリック(ステージ選択画面)　右クリック(設定)を押して下さい)", GetColor(255, 0, 0));
 	return;
 }
@@ -1876,19 +1881,6 @@ BOOL MY_LOAD_IMAGE(VOID)
 	ImageTitleROGO.rate = 0.0;								//拡大率
 	ImageTitleROGO.rateMAX = IMAGE_TITLE_ROGO_ROTA_MAX;		//拡大率MAX
 
-	//ステージ選択ボタン
-	strcpy_s(ImageStartButton.path, IMAGE_STAGE_BUTTON_PATH);			//パスの設定
-	ImageStartButton.handle = LoadGraph(ImageStartButton.path);			//読み込み
-	if (ImageStartButton.handle == -1)
-	{
-		//エラーメッセージ表示
-		MessageBox(GetMainWindowHandle(), IMAGE_STAGE_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
-		return FALSE;
-	}
-	GetGraphSize(ImageStartButton.handle, &ImageStartButton.width, &ImageStartButton.height);	//画像の幅と高さを取得
-	ImageStartButton.x = GAME_WIDTH / 4 - ImageStartButton.width / 2;			//画面の左、1/4の場所に配置
-	ImageStartButton.y = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;		//画面の下、1/4の場所に配置
-
 	//タイトルスタート
 	strcpy_s(ImageTitleSTART.image.path, IMAGE_TITLE_START_PATH);					//パスの設定
 	ImageTitleSTART.image.handle = LoadGraph(ImageTitleSTART.image.path);			//読み込み
@@ -1904,6 +1896,33 @@ BOOL MY_LOAD_IMAGE(VOID)
 	ImageTitleSTART.Cnt = 0.0;								//カウンタ
 	ImageTitleSTART.CntMAX = IMAGE_TITLE_START_CNT_MAX;		//カウンタMAX
 	ImageTitleSTART.IsDraw = FALSE;							//描画させない
+
+	//ステージ選択ボタン
+	strcpy_s(ImageStartButton.path, IMAGE_STAGE_BUTTON_PATH);			//パスの設定
+	ImageStartButton.handle = LoadGraph(ImageStartButton.path);			//読み込み
+	if (ImageStartButton.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_STAGE_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageStartButton.handle, &ImageStartButton.width, &ImageStartButton.height);	//画像の幅と高さを取得
+	ImageStartButton.x = GAME_WIDTH / 4 - ImageStartButton.width / 2;			//画面の左、1/4の場所に配置
+	ImageStartButton.y = GAME_HEIGHT / 2 - ImageStartButton.height / 2;		//画面の下、1/2の場所に配置
+
+	//設定ボタン
+	strcpy_s(ImageSetupButton.path, IMAGE_SETUP_BUTTON_PATH);			//パスの設定
+	ImageSetupButton.handle = LoadGraph(ImageSetupButton.path);			//読み込み
+	if (ImageSetupButton.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_SETUP_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageSetupButton.handle, &ImageSetupButton.width, &ImageSetupButton.height);	//画像の幅と高さを取得
+	ImageSetupButton.x = GAME_WIDTH * 0.75 - ImageSetupButton.width / 2;		//画面の左、1/4の場所に配置
+	ImageSetupButton.y = GAME_HEIGHT / 2 - ImageSetupButton.height / 2;			//画面の下、1/2の場所に配置
+
 
 	//エンドコンプ
 	strcpy_s(ImageEndCOMP.image.path, IMAGE_END_COMP_PATH);					//パスの設定
@@ -2116,6 +2135,7 @@ VOID MY_DELETE_IMAGE(VOID)
 	DeleteGraph(ImageTitleROGO.image.handle);
 	DeleteGraph(ImageTitleSTART.image.handle);
 	DeleteGraph(ImageStartButton.handle);
+	DeleteGraph(ImageSetupButton.handle);
 	DeleteGraph(ImageEndCOMP.image.handle);
 	DeleteGraph(ImageEndFAIL.image.handle);
 

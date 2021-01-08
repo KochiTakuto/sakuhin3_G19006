@@ -39,7 +39,7 @@
 #define IMAGE_TITLE_ROGO_ROTA		0.005		//拡大率
 #define IMAGE_TITLE_ROGO_ROTA_MAX	1.0			//拡大率MAX
 #define IMAGE_TITLE_ROGO_X_SPEED	1			//X移動速度
-#define IMAGE_TITLE_START_PATH		TEXT(".\\IMAGE\\ボタン.png")	//タイトルスタートの画像
+#define IMAGE_TITLE_START_PATH		TEXT(".\\IMAGE\\クリックしてスタート画像.png")	//タイトルスタートの画像
 #define IMAGE_TITLE_START_CNT		1			//点滅カウンタ(元は1)
 #define IMAGE_TITLE_START_CNT_MAX	30			//点滅カウンタMAX(元は30)
 

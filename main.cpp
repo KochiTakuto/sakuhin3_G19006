@@ -857,11 +857,11 @@ VOID MY_START_PROC(VOID)
 	//左クリックしたら、メニューシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_TITLE.handle) != 0)
-		{
-			StopSoundMem(BGM_TITLE.handle);	//BGMを止める
-		}
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_TITLE.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_TITLE.handle);	//BGMを止める
+		//}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
@@ -1054,22 +1054,22 @@ VOID MY_MENU(VOID)
 VOID MY_MENU_PROC(VOID)
 {
 	//BGMが流れていないなら
-	if (CheckSoundMem(BGM_MENU.handle) == 0)
+	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
 		//(変更,BGMの音量)
 		//BGMの音量を下げる
-		ChangeVolumeSoundMem(255 * 75 / 100, BGM_MENU.handle);	//75%の音量にする
-		PlaySoundMem(BGM_MENU.handle, DX_PLAYTYPE_LOOP);
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_TITLE.handle);	//75%の音量にする
+		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
 	//左クリックしたら、ステージ選択シーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_MENU.handle) != 0)
-		{
-			StopSoundMem(BGM_MENU.handle);	//BGMを止める
-		}
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_MENU.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_MENU.handle);	//BGMを止める
+		//}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
@@ -1082,11 +1082,11 @@ VOID MY_MENU_PROC(VOID)
 	//右クリックしたら、設定シーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_MENU.handle) != 0)
-		{
-			StopSoundMem(BGM_MENU.handle);	//BGMを止める
-		}
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_MENU.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_MENU.handle);	//BGMを止める
+		//}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
@@ -1128,21 +1128,21 @@ VOID MY_CHOICE(VOID)
 VOID MY_CHOICE_PROC(VOID)
 {
 	//BGMが流れていないなら
-	if (CheckSoundMem(BGM_CHOICE.handle) == 0)
+	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
 		//(変更,BGMの音量)
 		//BGMの音量を下げる
-		ChangeVolumeSoundMem(255 * 75 / 100, BGM_CHOICE.handle);	//75%の音量にする
-		PlaySoundMem(BGM_CHOICE.handle, DX_PLAYTYPE_LOOP);
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_TITLE.handle);	//75%の音量にする
+		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
 	//左クリックしたら、プレイシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
+		//BGMが流れているなら(変更：BGM_CHOICE→BGM_TITLE)
+		if (CheckSoundMem(BGM_TITLE.handle) != 0)
 		{
-			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
+			StopSoundMem(BGM_TITLE.handle);	//BGMを止める
 		}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
@@ -1156,11 +1156,11 @@ VOID MY_CHOICE_PROC(VOID)
 	//右クリックしたら、メニューシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_CHOICE.handle) != 0)
-		{
-			StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
-		}
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_CHOICE.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
+		//}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
@@ -1197,22 +1197,22 @@ VOID MY_SETUP(VOID)
 VOID MY_SETUP_PROC(VOID)
 {
 	//BGMが流れていないなら
-	if (CheckSoundMem(BGM_SETUP.handle) == 0)
+	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
 		//(変更,BGMの音量)
 		//BGMの音量を下げる
-		ChangeVolumeSoundMem(255 * 75 / 100, BGM_SETUP.handle);	//75%の音量にする
-		PlaySoundMem(BGM_SETUP.handle, DX_PLAYTYPE_LOOP);
+		ChangeVolumeSoundMem(255 * 75 / 100, BGM_TITLE.handle);	//75%の音量にする
+		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
 	//右クリックしたらを押したら、メニューシーンへ移動する(戻る)
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
-		//BGMが流れているなら
-		if (CheckSoundMem(BGM_SETUP.handle) != 0)
-		{
-			StopSoundMem(BGM_SETUP.handle);	//BGMを止める
-		}
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_SETUP.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_SETUP.handle);	//BGMを止める
+		//}
 
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
@@ -1714,7 +1714,7 @@ VOID MY_END_PROC(VOID)
 
 		return;
 	}
-
+	
 	switch (GameEndKind)
 	{
 	case GAME_END_COMP:
@@ -1725,7 +1725,7 @@ VOID MY_END_PROC(VOID)
 		{
 			//BGMの音量を下げる
 			ChangeVolumeSoundMem(255 * 50 / 100, BGM_COMP.handle);	//50%の音量にする
-			PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_LOOP);
+			PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
 		}
 
 		//コンプリートを点滅
@@ -1756,7 +1756,7 @@ VOID MY_END_PROC(VOID)
 		{
 			//BGMの音量を下げる
 			ChangeVolumeSoundMem(255 * 50 / 100, BGM_FAIL.handle);	//50%の音量にする
-			PlaySoundMem(BGM_FAIL.handle, DX_PLAYTYPE_LOOP);
+			PlaySoundMem(BGM_FAIL.handle, DX_PLAYTYPE_LOOP);		//音ファイルを再生する・LOOP(ループ)再生で
 		}
 
 		//フォールトを点滅
@@ -2179,35 +2179,35 @@ BOOL MY_LOAD_MUSIC(VOID)
 		return FALSE;
 	}
 
-	//メニューのBGM
-	strcpy_s(BGM_MENU.path, MUSIC_BGM_MENU_PATH);				//パスの設定
-	BGM_MENU.handle = LoadSoundMem(BGM_MENU.path);				//読み込み
-	if (BGM_MENU.handle == -1)
-	{
-		//エラーメッセージ表示
-		MessageBox(GetMainWindowHandle(), MUSIC_BGM_MENU_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
-		return FALSE;
-	}
+	////メニューのBGM(変更：使う場面が無かった)
+	//strcpy_s(BGM_MENU.path, MUSIC_BGM_MENU_PATH);				//パスの設定
+	//BGM_MENU.handle = LoadSoundMem(BGM_MENU.path);				//読み込み
+	//if (BGM_MENU.handle == -1)
+	//{
+	//	//エラーメッセージ表示
+	//	MessageBox(GetMainWindowHandle(), MUSIC_BGM_MENU_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+	//	return FALSE;
+	//}
 
-	//ステージ選択画面のBGM
-	strcpy_s(BGM_CHOICE.path, MUSIC_BGM_CHOICE_PATH);			//パスの設定
-	BGM_CHOICE.handle = LoadSoundMem(BGM_CHOICE.path);			//読み込み
-	if (BGM_CHOICE.handle == -1)
-	{
-		//エラーメッセージ表示
-		MessageBox(GetMainWindowHandle(), MUSIC_BGM_CHOICE_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
-		return FALSE;
-	}
+	////ステージ選択画面のBGM
+	//strcpy_s(BGM_CHOICE.path, MUSIC_BGM_CHOICE_PATH);			//パスの設定
+	//BGM_CHOICE.handle = LoadSoundMem(BGM_CHOICE.path);			//読み込み
+	//if (BGM_CHOICE.handle == -1)
+	//{
+	//	//エラーメッセージ表示
+	//	MessageBox(GetMainWindowHandle(), MUSIC_BGM_CHOICE_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+	//	return FALSE;
+	//}
 
-	//設定のBGM
-	strcpy_s(BGM_SETUP.path, MUSIC_BGM_SETUP_PATH);				//パスの設定
-	BGM_SETUP.handle = LoadSoundMem(BGM_SETUP.path);				//読み込み
-	if (BGM_SETUP.handle == -1)
-	{
-		//エラーメッセージ表示
-		MessageBox(GetMainWindowHandle(), MUSIC_BGM_SETUP_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
-		return FALSE;
-	}
+	////設定のBGM
+	//strcpy_s(BGM_SETUP.path, MUSIC_BGM_SETUP_PATH);				//パスの設定
+	//BGM_SETUP.handle = LoadSoundMem(BGM_SETUP.path);				//読み込み
+	//if (BGM_SETUP.handle == -1)
+	//{
+	//	//エラーメッセージ表示
+	//	MessageBox(GetMainWindowHandle(), MUSIC_BGM_SETUP_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+	//	return FALSE;
+	//}
 
 
 	//コンプリートBGM

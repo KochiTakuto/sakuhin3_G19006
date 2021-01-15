@@ -907,33 +907,52 @@ VOID MY_START_PROC(VOID)
 	//	ImageTitleROGO.image.x += IMAGE_TITLE_ROGO_X_SPEED;
 	//}
 
-	//タイトルロゴを拡大
-	if (ImageTitleROGO.rate < ImageTitleROGO.rateMAX)
+	////タイトルロゴを拡大---------------
+	//if (ImageTitleROGO.rate < ImageTitleROGO.rateMAX)
+	//{
+	//	ImageTitleROGO.rate += IMAGE_TITLE_ROGO_ROTA;
+	//}
+	//else
+	//{
+	//	//タイトルロゴが拡大しきったら
+
+	//	//スタートを点滅
+	//	if (ImageTitleSTART.Cnt < ImageTitleSTART.CntMAX)
+	//	{
+	//		ImageTitleSTART.Cnt += IMAGE_TITLE_START_CNT;
+	//	}
+	//	else
+	//	{
+	//		//描画する/しないを決める
+	//		if (ImageTitleSTART.IsDraw == FALSE)
+	//		{
+	//			ImageTitleSTART.IsDraw = TRUE;
+	//		}
+	//		else if (ImageTitleSTART.IsDraw == TRUE)
+	//		{
+	//			ImageTitleSTART.IsDraw = FALSE;
+	//		}
+	//		ImageTitleSTART.Cnt = 0;
+	//	}
+
+	//スタートを点滅(変更：ロゴが拡大しきったらの条件式がいらないかったので変更)
+	if (ImageTitleSTART.Cnt < ImageTitleSTART.CntMAX)
 	{
-		ImageTitleROGO.rate += IMAGE_TITLE_ROGO_ROTA;
+		ImageTitleSTART.Cnt += IMAGE_TITLE_START_CNT;
 	}
 	else
 	{
-		//タイトルロゴが拡大しきったら
+		//描画する/しないを決める
+		if (ImageTitleSTART.IsDraw == FALSE)
+		{
+			ImageTitleSTART.IsDraw = TRUE;
+		}
+		else if (ImageTitleSTART.IsDraw == TRUE)
+		{
+			ImageTitleSTART.IsDraw = FALSE;
+		}
+		ImageTitleSTART.Cnt = 0;
 
-		//スタートを点滅
-		if (ImageTitleSTART.Cnt < ImageTitleSTART.CntMAX)
-		{
-			ImageTitleSTART.Cnt += IMAGE_TITLE_START_CNT;
-		}
-		else
-		{
-			//描画する/しないを決める
-			if (ImageTitleSTART.IsDraw == FALSE)
-			{
-				ImageTitleSTART.IsDraw = TRUE;
-			}
-			else if (ImageTitleSTART.IsDraw == TRUE)
-			{
-				ImageTitleSTART.IsDraw = FALSE;
-			}
-			ImageTitleSTART.Cnt = 0;
-		}
 	}
 
 	return;
@@ -1026,7 +1045,7 @@ VOID MY_START_DRAW(VOID)
 	//タイトルロゴを回転しながら描画
 	DrawRotaGraph(
 		ImageTitleROGO.image.x, ImageTitleROGO.image.y,	//画像の座標
-		ImageTitleROGO.rate,							//画像の拡大率
+		ImageTitleROGO.rateMAX,							//画像の拡大率(rateからrateMAXに変更)
 		ImageTitleROGO.angle,							//画像の回転率
 		ImageTitleROGO.image.handle, TRUE);				//画像のハンドル
 
@@ -1110,6 +1129,15 @@ VOID MY_MENU_DRAW(VOID)
 
 	//背景を描画
 	DrawGraph(ImageSetupButton.x, ImageSetupButton.y, ImageSetupButton.handle, TRUE);	//設定ボタンの描画
+
+	////タイトルロゴを描画
+	//DrawGraph(ImageTitleROGO.image.x, ImageTitleROGO.image.y, ImageTitleROGO.image.handle, TRUE);	//画像の幅と高さを取得
+
+	DrawRotaGraph(
+		ImageTitleROGO.image.x, ImageTitleROGO.image.y,	//画像の座標
+		ImageTitleROGO.rateMAX,							//画像の拡大率
+		ImageTitleROGO.angle,							//画像の回転率
+		ImageTitleROGO.image.handle, TRUE);				//画像のハンドル
 
 	DrawString(0, 0, "メニュー画面(左クリック(ステージ選択画面)　右クリック(設定)を押して下さい)", GetColor(255, 0, 0));
 	return;
@@ -1911,8 +1939,9 @@ BOOL MY_LOAD_IMAGE(VOID)
 		return FALSE;
 	}
 	GetGraphSize(ImageStartButton.handle, &ImageStartButton.width, &ImageStartButton.height);	//画像の幅と高さを取得
-	ImageStartButton.x = GAME_WIDTH / 4 - ImageStartButton.width / 2;			//画面の左、1/4の場所に配置
-	ImageStartButton.y = GAME_HEIGHT / 2 - ImageStartButton.height / 2;		//画面の下、1/2の場所に配置
+	//ImageStartButton.x = GAME_WIDTH / 4 - ImageStartButton.width / 2;			//画面の左、1/4の場所に配置
+	ImageStartButton.x = GAME_WIDTH / 4;										//画面の左、1/4の場所に配置(描画する基準点をボタンの左端からに変更)
+	ImageStartButton.y = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;		//画面の下、1/4の場所に配置
 
 	//設定ボタン
 	strcpy_s(ImageSetupButton.path, IMAGE_SETUP_BUTTON_PATH);			//パスの設定
@@ -1924,8 +1953,9 @@ BOOL MY_LOAD_IMAGE(VOID)
 		return FALSE;
 	}
 	GetGraphSize(ImageSetupButton.handle, &ImageSetupButton.width, &ImageSetupButton.height);	//画像の幅と高さを取得
-	ImageSetupButton.x = GAME_WIDTH * 0.75 - ImageSetupButton.width / 2;		//画面の左、1/4の場所に配置
-	ImageSetupButton.y = GAME_HEIGHT / 2 - ImageSetupButton.height / 2;			//画面の下、1/2の場所に配置
+	//ImageSetupButton.x = GAME_WIDTH * 0.75 - ImageSetupButton.width / 2;		//画面の左、1/4の場所に配置
+	ImageSetupButton.x = GAME_WIDTH * 0.75 - ImageSetupButton.width;			//画面の左、1/4の場所に配置(描画する基準点ををボタンの右端からに変更)
+	ImageSetupButton.y = GAME_HEIGHT *0.75 - ImageSetupButton.height / 2;		//画面の下、1/4の場所に配置
 
 
 	//エンドコンプ

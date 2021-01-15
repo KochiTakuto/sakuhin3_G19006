@@ -1485,8 +1485,8 @@ VOID MY_PLAY_PROC(VOID)
 	}
 	*/
 
-	//キーのエンターキーをクリックしたとき(変更)
-	if (MY_KEY_DOWN(KEY_INPUT_RETURN) == TRUE)
+	//左クリックしたとき(変更：MY_MOUSE_DOWNとMOUSE_INPUT_LEFTに変更)
+	if (MY_MOUSE_DOWN(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//ショットが撃てるとき
 		if (player.CanShot == TRUE)
@@ -1501,8 +1501,12 @@ VOID MY_PLAY_PROC(VOID)
 				if (player.tama[cnt].IsDraw == FALSE)
 				{
 					//弾をY位置の中心から発射する(変更)
+					////弾のX位置はプレイヤーの左部分から発射
+					//player.tama[cnt].x = player.image.x;
+
+					//(変更：X位置の中心から発射)
 					//弾のX位置はプレイヤーの左部分から発射
-					player.tama[cnt].x = player.image.x;
+					player.tama[cnt].x = player.CenterX - player.tama[cnt].width / 2;
 
 					//弾のY位置はプレイヤーの中心から発射
 					player.tama[cnt].y = player.CenterY - player.tama[cnt].width / 2;
@@ -1815,7 +1819,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面(エンターキーを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "エンド画面(クリックして下さい)", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1843,7 +1847,7 @@ VOID MY_CLEAR_PROC(VOID)
 //クリア画面の描画
 VOID MY_CLEAR_DRAW(VOID)
 {
-	DrawString(0, 0, "クリア画面(エンターーキーを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "クリア画面(クリックして下さい)", GetColor(255, 0, 0));
 	return;
 }
 

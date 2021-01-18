@@ -43,7 +43,7 @@
 #define IMAGE_TITLE_START_CNT		1			//点滅カウンタ(元は1)
 #define IMAGE_TITLE_START_CNT_MAX	30			//点滅カウンタMAX(元は30)
 
-#define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージ選択ボタン.png")	//ステージ選択ボタンの画像
+#define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージボタン.png")	//ステージ選択ボタンの画像
 #define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")	//ステージ選択ボタンの画像
 
 #define IMAGE_END_COMP_PATH		TEXT(".\\IMAGE\\クリア！.png")	//エンドコンプ画像

@@ -1,3 +1,5 @@
 #include "resource.h"
 
 IDI_ICON1 ICON "ゲームのフリーアイコン.ico"
+
+IDC_CURSOR1 CURSOR "ターゲットのアイコン2.cur"

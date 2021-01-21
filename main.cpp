@@ -4,7 +4,7 @@
 
 //マクロ定義
 #define GAME_WIDTH			1920	//画面の横の大きさ(800)
-#define GAME_HEIGHT			1080	//画面の縦の大きさ(600)
+#define GAME_HEIGHT			1015	//画面の縦の大きさ(600)
 
 #define GAME_WINDOW_BAR		0				//タイトルバーはデフォルト
 #define GAME_WINDOW_NAME	"Sea Protecter"	//ウィンドウのタイトル
@@ -44,7 +44,7 @@
 #define IMAGE_TITLE_START_CNT_MAX	30			//点滅カウンタMAX(元は30)
 
 #define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージボタン.png")	//ステージ選択ボタンの画像
-#define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")	//ステージ選択ボタンの画像
+#define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")		//ステージ選択ボタンの画像
 
 #define IMAGE_END_COMP_PATH		TEXT(".\\IMAGE\\クリア！.png")	//エンドコンプ画像
 #define IMAGE_END_COMP_CNT		1			//点滅カウンタ
@@ -409,7 +409,7 @@ BOOL MY_CHECK_RECT_COLL(RECT, RECT);	//領域の当たり判定をする関数
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	SetOutApplicationLogValidFlag(FALSE);               //Log.txtを出力しない
-	ChangeWindowMode(FALSE);							//全画面モードに設定(元：ウィンドウモード)
+	ChangeWindowMode(TRUE);								//全画面モードに設定(元に戻しました21日：ウィンドウモード)
 	SetGraphMode(GAME_WIDTH, GAME_HEIGHT, GAME_COLOR);	//指定の数値でウィンドウを表示する
 	SetWindowStyleMode(GAME_WINDOW_BAR);				//タイトルバーはデフォルトにする
 	SetMainWindowText(TEXT(GAME_WINDOW_NAME));			//ウィンドウのタイトルの文字
@@ -417,6 +417,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	SetWindowIconID(IDI_ICON1);							//アイコンファイルを読込
 
 	if (DxLib_Init() == -1) { return -1; }	//ＤＸライブラリ初期化処理
+
+	//カーソルのハンドルを取得
+	HCURSOR cur_aim1 = LoadCursorFromFile(TEXT(IDC_CURSOR1));
+
+	//ウィンドウクラスのカーソルのみ(GCL_HCURSOR)を変更する(Win32関数)
+	LONG OldWindowClass
+		= SetClassLongPtr(GetMainWindowHandle(), 0, (LONG)cur_aim1);
 
 	//画像を読み込む
 	if (MY_LOAD_IMAGE() == FALSE) { return -1; }
@@ -535,6 +542,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	//音楽ハンドルを破棄
 	MY_DELETE_MUSIC();
+
+	//ウィンドウクラスのカーソルのみ変更する(Win32関数ということは使えない？)
+	SetClassLongPtr(GetMainWindowHandle(), 0, OldWindowClass);
 
 	DxLib_End();	//ＤＸライブラリ使用の終了処理
 
@@ -1277,6 +1287,9 @@ VOID MY_PLAY(VOID)
 //プレイ画面の処理
 VOID MY_PLAY_PROC(VOID)
 {
+	//マウスカーソルの座標を取得
+	GetMousePoint(&mouse.Point.x, &mouse.Point.y);
+
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM.handle) == 0)
 	{
@@ -1653,6 +1666,9 @@ VOID MY_PLAY_DRAW(VOID)
 		}
 	}
 	*/
+	
+	//マウスの位置を表示(デバック用)
+	DrawFormatString(150, 0, GetColor(255, 255, 255), "X座標：%d, Y座標：%d", mouse.Point.x, mouse.Point.y);
 
 	//ゴールの描画（デバッグ用）
 	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(255, 255, 0), TRUE);

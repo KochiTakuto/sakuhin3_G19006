@@ -33,6 +33,7 @@
 //画像のパス
 #define IMAGE_BACK_PATH			TEXT(".\\IMAGE\\Sea.jpg")		//背景の画像
 #define IMAGE_PLAYER_PATH		TEXT(".\\IMAGE\\イルカ.png")	//プレイヤーの画像
+#define IMAGE_PLAYERBACK_PATH	TEXT(".\\IMAGE\\イルカ反転.png")//プレイヤー(反転)の画像
 
 #define IMAGE_TITLE_BK_PATH			TEXT(".\\IMAGE\\タイトル海.jpg")	//タイトル背景の画像
 #define IMAGE_TITLE_ROGO_PATH		TEXT(".\\IMAGE\\タイトルロゴ.png")	//タイトルロゴの画像
@@ -307,6 +308,7 @@ IMAGE_BLINK ImageEndCOMP;				//エンドコンプの画像
 IMAGE_BLINK ImageEndFAIL;				//エンドフォールの画像
 
 CHARA player;		//ゲームのキャラ
+CHARA playerback;	//ゲームのキャラ
 
 //音楽関連
 MUSIC BGM;			//ゲームのBGM
@@ -883,10 +885,14 @@ VOID MY_START_PROC(VOID)
 		player.image.x = player.CenterX;
 		player.image.y = player.CenterY;
 
+		//プレイヤー(反転)の画像の位置を設定する
+		playerback.image.x = player.image.x;
+		playerback.image.y = player.image.y;
+
 		//プレイヤーの当たる以前の位置を設定する
 		player.collBeforePt.x = player.CenterX;
 		player.collBeforePt.y = player.CenterY;
-
+		
 		//(変更削除)
 		/*
 		//スタート位置をマウスの位置にする
@@ -1673,8 +1679,16 @@ VOID MY_PLAY_DRAW(VOID)
 	//ゴールの描画（デバッグ用）
 	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(255, 255, 0), TRUE);
 
-	//プレイヤーのを描画する
-	DrawGraph(player.image.x, player.image.y, player.image.handle, TRUE);
+	//プレイヤーを描画する(マウスの位置によって左向きと右向きを設定)
+	if (mouse.Point.x < player.image.x)
+	{
+		DrawGraph(player.image.x, player.image.y, player.image.handle, TRUE);
+	}
+	else
+	{
+		DrawGraph(player.image.x, player.image.y, playerback.image.handle, TRUE);
+	}
+	
 
 	//(変更削除)
 	/*
@@ -2094,6 +2108,19 @@ BOOL MY_LOAD_IMAGE(VOID)
 		TAMA_DIV_WIDTH, TAMA_DIV_HEIGHT,					//画像を分割するの幅と高さ
 		&player.tama[0].handle[0]);							//分割した画像が入るハンドル
 
+	//プレイヤー(反転)の画像
+	strcpy_s(playerback.image.path, IMAGE_PLAYERBACK_PATH);		//パスの設定
+	playerback.image.handle= LoadGraph(playerback.image.path);	//読み込み
+	if (playerback.image.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_PLAYERBACK_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(playerback.image.handle, &playerback.image.width, &playerback.image.height);	//画像の幅と高さを取得
+	playerback.image.x = GAME_WIDTH / 2 - playerback.image.width / 2;		//左右中央揃え
+	playerback.image.y = GAME_HEIGHT / 2 - playerback.image.height / 2;		//上下中央揃え
+
 	if (tamaRedRes == -1)
 	{
 		//エラーメッセージ表示
@@ -2206,6 +2233,7 @@ VOID MY_DELETE_IMAGE(VOID)
 	}
 
 	DeleteGraph(player.image.handle);
+	DeleteGraph(playerback.image.handle);
 
 	DeleteGraph(ImageTitleBK.handle);
 	DeleteGraph(ImageTitleROGO.image.handle);

@@ -4,7 +4,7 @@
 
 //マクロ定義
 #define GAME_WIDTH			1920	//画面の横の大きさ(800)
-#define GAME_HEIGHT			1015	//画面の縦の大きさ(600)
+#define GAME_HEIGHT			1010	//画面の縦の大きさ(600)
 
 #define GAME_WINDOW_BAR		0				//タイトルバーはデフォルト
 #define GAME_WINDOW_NAME	"Sea Protecter"	//ウィンドウのタイトル
@@ -421,7 +421,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	//カーソルのハンドルを取得
 	HCURSOR cur_aim1 = LoadCursorFromFile(TEXT(IDC_CURSOR1));
 
-	//ウィンドウクラスのカーソルのみ(GCL_HCURSOR)を変更する(Win32関数)
+	//ウィンドウクラスのカーソルのみ(GCL_HCURSOR)を変更する(Win32関数SetClassLong_Win64関数はSetClassLongPtr)
 	LONG OldWindowClass
 		= SetClassLongPtr(GetMainWindowHandle(), 0, (LONG)cur_aim1);
 
@@ -1526,8 +1526,8 @@ VOID MY_PLAY_PROC(VOID)
 	}
 	*/
 
-	//左クリックしたとき(変更：MY_MOUSE_DOWNとMOUSE_INPUT_LEFTに変更)
-	if (MY_MOUSE_DOWN(MOUSE_INPUT_LEFT) == TRUE)
+	//左クリックしたとき(変更：MY_MOUSE_DOWNとMOUSE_INPUT_LEFTに変更後、MY_MOUSE_PUSHに変更)
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)	//クリックしたとき
 	{
 		//ショットが撃てるとき
 		if (player.CanShot == TRUE)
@@ -1715,15 +1715,41 @@ VOID MY_PLAY_DRAW(VOID)
 				player.tama[cnt].changeImageCnt = 0;
 			}
 
-			//弾を横に移動させる(変更)
-			if (player.tama[cnt].x < 0)
+			if (mouse.Point.x < player.image.x)	//マウスのX位置がプレイヤーより小さいとき(変更：追加)
 			{
-				player.tama[cnt].IsDraw = FALSE;	//描画終了
+				//弾を左に移動させる(変更)
+				if (player.tama[cnt].x < 0)		//x座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
+				{
+					player.tama[cnt].IsDraw = FALSE;	//描画終了
+				}
+				else
+				{
+					//player.tama[cnt].x -= player.tama[cnt].speed;(書き方を下のように変えました)
+					player.tama[cnt].x = player.tama[cnt].x - player.tama[cnt].speed;	//弾を左に移動
+				}
 			}
-			else
-			{
-				player.tama[cnt].x -= player.tama[cnt].speed;
-			}
+
+			////弾を左に移動させる(変更)
+			//if (player.tama[cnt].x < 0)//x座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
+			//{
+			//	player.tama[cnt].IsDraw = FALSE;	//描画終了
+			//}
+			//else
+			//{
+			//	//player.tama[cnt].x -= player.tama[cnt].speed;(書き方を下のように変えました)
+			//	player.tama[cnt].x = player.tama[cnt].x - player.tama[cnt].speed;
+			//}
+
+			////弾をマウスの位置に移動させる(変更)
+			//if (player.tama[cnt].y < 0)
+			//{
+			//	player.tama[cnt].IsDraw = FALSE;	//描画終了
+			//}
+			//else
+			//{
+			//	player.tama[cnt].y -= player.tama[cnt].speed;
+			//}
+
 		}
 	}
 

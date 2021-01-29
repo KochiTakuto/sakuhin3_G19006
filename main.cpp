@@ -1097,22 +1097,29 @@ VOID MY_MENU_PROC(VOID)
 		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	////左クリックしたら、ステージ選択シーンへ移動する
-	//if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
-	//{
-	//	////BGMが流れているなら(変更：止めない)
-	//	//if (CheckSoundMem(BGM_MENU.handle) != 0)
-	//	//{
-	//	//	StopSoundMem(BGM_MENU.handle);	//BGMを止める
-	//	//}
+	//左クリックしたら、ステージ選択シーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
+	{
+		////BGMが流れているなら(変更：止めない)
+		//if (CheckSoundMem(BGM_MENU.handle) != 0)
+		//{
+		//	StopSoundMem(BGM_MENU.handle);	//BGMを止める
+		//}
 
-	//	SetMouseDispFlag(TRUE);			//マウスカーソルを表示
+		//ステージ選択ボタンを押したとき
+		if (ImageStartButton.x <= mouse.Point.x &&							//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageStartButton.x + ImageStartButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageStartButton.y <= mouse.Point.y &&							//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageStartButton.y + ImageStartButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		{
+			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
-	//	//ゲームの終了状態を初期化する
-	//	GameEndKind = GAME_END_FAIL;
+			//ゲームの終了状態を初期化する
+			GameEndKind = GAME_END_FAIL;
 
-	//	GameScene = GAME_SCENE_CHOICE;
-	//}
+			GameScene = GAME_SCENE_CHOICE;
+		}
+	}
 
 	//左クリック＋ボタンの位置なら、設定シーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)

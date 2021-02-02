@@ -81,8 +81,8 @@
 #define MUSIC_LOAD_ERR_TITLE	TEXT("音楽読み込みエラー")
 
 //音楽のパス
-#define MUSIC_BGM_PATH			TEXT(".\\MUSIC\\おさかなシャトル_-_8bit.mp3")	//BGM
-#define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")				//ショット音
+#define MUSIC_BGM_PATH			TEXT(".\\MUSIC\\海賊達の海.mp3")			//BGM
+#define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")			//ショット音
 
 #define MUSIC_CLICK_PATH		TEXT(".\\MUSIC\\決定、ボタン押下29.mp3")	//クリック音
 
@@ -1486,7 +1486,7 @@ VOID MY_PLAY_PROC(VOID)
 		player.CenterX = player.collBeforePt.x;
 		player.CenterY = player.collBeforePt.y;
 
-		//(変更削除：マップにあたるたびマウスの位置が強制的に移動させられていたので消しました)
+		//(変更削除：マップにあたるたびマウスの位置が強制的に移動させられていたので削除)
 		//SetMousePoint(player.collBeforePt.x, player.collBeforePt.y);
 		IsMove = FALSE;
 	}

@@ -46,6 +46,7 @@
 
 #define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージボタン.png")	//ステージ選択ボタンの画像
 #define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")		//ステージ選択ボタンの画像
+#define IMAGE_RETURN_BUTTON_PATH	TEXT(".\\IMAGE\\リターンボタン.png")	//リターンボタンの画像
 
 #define IMAGE_END_COMP_PATH		TEXT(".\\IMAGE\\クリア！.png")	//エンドコンプ画像
 #define IMAGE_END_COMP_CNT		1			//点滅カウンタ
@@ -85,7 +86,7 @@
 #define MUSIC_CLICK_PATH		TEXT(".\\MUSIC\\決定、ボタン押下29.mp3")	//クリック音
 
 #define MUSIC_BGM_TITLE_PATH	TEXT(".\\MUSIC\\周遊する銀鱗のひとつ.mp3")	//タイトルのBGM
-#define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニュー;のBGM
+#define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニューのBGM
 #define MUSIC_BGM_CHOICE_PATH	TEXT(".\\MUSIC\\レトロシューティング.mp3")	//ステージ選択画面のBGM
 #define MUSIC_BGM_SETUP_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//設定のBGM
 #define MUSIC_BGM_COMP_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//コンプリートBGM
@@ -305,6 +306,7 @@ IMAGE_BLINK ImageTitleSTART;			//タイトルスタートの画像
 
 IMAGE ImageStartButton;					//ステージ選択ボタンの画像
 IMAGE ImageSetupButton;					//設定ボタンの画像
+IMAGE ImageReturnButton;				//リターンボタンの画像
 
 IMAGE_BLINK ImageEndCOMP;				//エンドコンプの画像
 IMAGE_BLINK ImageEndFAIL;				//エンドフォールの画像
@@ -1206,8 +1208,8 @@ VOID MY_CHOICE_PROC(VOID)
 		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
 
-	//左クリックしたら、プレイシーンへ移動する
-	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
+	//右クリックしたら、プレイシーンへ移動する
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
 	{
 		//クリック音
 		PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
@@ -1226,21 +1228,31 @@ VOID MY_CHOICE_PROC(VOID)
 		GameScene = GAME_SCENE_PLAY;
 	}
 
-	//右クリックしたら、メニューシーンへ移動する
-	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
+	//右クリックしたら、メニューシーンへ戻る
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		////BGMが流れているなら(変更：止めない)
-		//if (CheckSoundMem(BGM_CHOICE.handle) != 0)
-		//{
-		//	StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
-		//}
+		//リターンボタンを押したとき
+		if (ImageReturnButton.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageReturnButton.x + ImageReturnButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageReturnButton.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageReturnButton.y + ImageReturnButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		{
+			////BGMが流れているなら(変更：止めない)
+			//if (CheckSoundMem(BGM_CHOICE.handle) != 0)
+			//{
+			//	StopSoundMem(BGM_CHOICE.handle);	//BGMを止める
+			//}
 
-		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
 
-		//ゲームの終了状態を初期化する
-		GameEndKind = GAME_END_FAIL;
+			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
-		GameScene = GAME_SCENE_MENU;
+			//ゲームの終了状態を初期化する
+			GameEndKind = GAME_END_FAIL;
+
+			GameScene = GAME_SCENE_MENU;
+		}
 	}
 
 	return;
@@ -1253,7 +1265,10 @@ VOID MY_CHOICE_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
-	DrawString(0, 0, "ステージ選択画面(左クリック(プレイ画面)右クリック(メニュー画面))", GetColor(255, 0, 0));
+	//背景を描画
+	DrawGraph(ImageReturnButton.x, ImageReturnButton.y, ImageReturnButton.handle, TRUE);	//リターンボタンの描画
+
+	DrawString(0, 0, "ステージ選択画面(右クリック(プレイ画面)画像クリック(メニュー画面))", GetColor(255, 0, 0));
 	return;
 }
 
@@ -1277,22 +1292,35 @@ VOID MY_SETUP_PROC(VOID)
 		ChangeVolumeSoundMem(255 * 75 / 100, BGM_TITLE.handle);	//75%の音量にする
 		PlaySoundMem(BGM_TITLE.handle, DX_PLAYTYPE_LOOP);
 	}
+	////右クリックしたらを押したら、メニューシーンへ移動する(戻る)
+	//if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
+	//{
+	//	//BGMが流れているなら(変更：止めない)
+	//	if (CheckSoundMem(BGM_SETUP.handle) != 0)
+	//	{
+	//		StopSoundMem(BGM_SETUP.handle);	//BGMを止める
+	//	}
+	//}
 
-	//右クリックしたらを押したら、メニューシーンへ移動する(戻る)
-	if (MY_MOUSE_PUSH(MOUSE_INPUT_RIGHT) == TRUE)
+	//左クリックしたら、メイン画面へ戻る
+	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		////BGMが流れているなら(変更：止めない)
-		//if (CheckSoundMem(BGM_SETUP.handle) != 0)
-		//{
-		//	StopSoundMem(BGM_SETUP.handle);	//BGMを止める
-		//}
+		//リターンボタンを押したとき
+		if (ImageReturnButton.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageReturnButton.x + ImageReturnButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageReturnButton.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageReturnButton.y + ImageReturnButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		{
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
 
-		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
+			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
-		//ゲームの終了状態を初期化する
-		GameEndKind = GAME_END_FAIL;
+			//ゲームの終了状態を初期化する
+			GameEndKind = GAME_END_FAIL;
 
-		GameScene = GAME_SCENE_MENU;
+			GameScene = GAME_SCENE_MENU;
+		}
 	}
 
 	return;
@@ -1304,6 +1332,9 @@ VOID MY_SETUP_DRAW(VOID)
 {
 	//背景を描画
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
+	
+	//背景を描画
+	DrawGraph(ImageReturnButton.x, ImageReturnButton.y, ImageReturnButton.handle, TRUE);	//設定ボタンの描画
 
 	DrawString(0, 0, "設定画面(右クリックを押して下さい)", GetColor(255, 0, 0));
 	return;
@@ -2042,6 +2073,18 @@ BOOL MY_LOAD_IMAGE(VOID)
 	ImageSetupButton.x = GAME_WIDTH * 0.75 - ImageSetupButton.width;			//画面の左、1/4の場所に配置(描画する基準点ををボタンの右端からに変更)
 	ImageSetupButton.y = GAME_HEIGHT *0.75 - ImageSetupButton.height / 2;		//画面の下、1/4の場所に配置
 
+	//リターンボタン(戻る)
+	strcpy_s(ImageReturnButton.path, IMAGE_RETURN_BUTTON_PATH);			//パスの設定
+	ImageReturnButton.handle = LoadGraph(ImageReturnButton.path);			//読み込み
+	if (ImageReturnButton.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_RETURN_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageReturnButton.handle, &ImageReturnButton.width, &ImageReturnButton.height);	//画像の幅と高さを取得
+	ImageReturnButton.x = GAME_WIDTH / 2 - ImageReturnButton.width / 2;			//画面の左、1/2の場所に配置(描画する基準点をボタンの中央からに変更)
+	ImageReturnButton.y = GAME_HEIGHT * 0.75 - ImageReturnButton.height / 2;	//画面の下、1/4の場所に配置
 
 	//エンドコンプ
 	strcpy_s(ImageEndCOMP.image.path, IMAGE_END_COMP_PATH);					//パスの設定
@@ -2269,6 +2312,7 @@ VOID MY_DELETE_IMAGE(VOID)
 	DeleteGraph(ImageTitleSTART.image.handle);
 	DeleteGraph(ImageStartButton.handle);
 	DeleteGraph(ImageSetupButton.handle);
+	DeleteGraph(ImageReturnButton.handle);
 	DeleteGraph(ImageEndCOMP.image.handle);
 	DeleteGraph(ImageEndFAIL.image.handle);
 

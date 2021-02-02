@@ -1086,7 +1086,7 @@ VOID MY_START_DRAW(VOID)
 		DrawGraph(ImageTitleSTART.image.x, ImageTitleSTART.image.y, ImageTitleSTART.image.handle, TRUE);
 	}
 
-	DrawString(0, 0, "スタート画面(左クリックを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "スタート画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1189,7 +1189,7 @@ VOID MY_MENU_DRAW(VOID)
 		ImageTitleROGO.angle,							//画像の回転率
 		ImageTitleROGO.image.handle, TRUE);				//画像のハンドル
 
-	DrawString(0, 0, "メニュー画面(左クリック(ステージ選択画面)　右クリック(設定)を押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "メニュー画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1284,7 +1284,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);			//ネクストボタンの描画
 
-	DrawString(0, 0, "ステージ選択画面(右クリック(プレイ画面)画像クリック(メニュー画面))", GetColor(255, 0, 0));
+	DrawString(0, 0, "ステージ選択", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1352,7 +1352,7 @@ VOID MY_SETUP_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageReturnButton.x, ImageReturnButton.y, ImageReturnButton.handle, TRUE);	//設定ボタンの描画
 
-	DrawString(0, 0, "設定画面(右クリックを押して下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "設定画面", GetColor(0, 0, 0));
 	return;
 }
 

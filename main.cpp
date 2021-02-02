@@ -82,7 +82,9 @@
 #define MUSIC_BGM_PATH			TEXT(".\\MUSIC\\おさかなシャトル_-_8bit.mp3")	//BGM
 #define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")				//ショット音
 
-#define MUSIC_BGM_TITLE_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//タイトルのBGM
+#define MUSIC_CLICK_PATH		TEXT(".\\MUSIC\\決定、ボタン押下29.mp3")	//クリック音
+
+#define MUSIC_BGM_TITLE_PATH	TEXT(".\\MUSIC\\周遊する銀鱗のひとつ.mp3")	//タイトルのBGM
 #define MUSIC_BGM_MENU_PATH		TEXT(".\\MUSIC\\Good_Luck-よき旅を-.mp3")	//メニュー;のBGM
 #define MUSIC_BGM_CHOICE_PATH	TEXT(".\\MUSIC\\レトロシューティング.mp3")	//ステージ選択画面のBGM
 #define MUSIC_BGM_SETUP_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//設定のBGM
@@ -312,6 +314,7 @@ CHARA playerback;	//ゲームのキャラ
 
 //音楽関連
 MUSIC BGM;			//ゲームのBGM
+MUSIC BGM_CLICK;	//クリック音
 
 MUSIC BGM_TITLE;	//タイトルのBGM
 MUSIC BGM_MENU;		//メニューのBGM
@@ -875,6 +878,9 @@ VOID MY_START_PROC(VOID)
 		//	StopSoundMem(BGM_TITLE.handle);	//BGMを止める
 		//}
 
+		//クリック音
+		PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
 		SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 		//プレイヤーの中心位置を計算する
@@ -1112,6 +1118,9 @@ VOID MY_MENU_PROC(VOID)
 			ImageStartButton.y <= mouse.Point.y &&							//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
 			mouse.Point.y <= ImageStartButton.y + ImageStartButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
 		{
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
 			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 			//ゲームの終了状態を初期化する
@@ -1135,8 +1144,10 @@ VOID MY_MENU_PROC(VOID)
 			mouse.Point.x <= ImageSetupButton.x + ImageSetupButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
 			ImageSetupButton.y <= mouse.Point.y &&							//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
 			mouse.Point.y <= ImageSetupButton.y + ImageSetupButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
-
 		{
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
 			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
 			//ゲームの終了状態を初期化する
@@ -1198,6 +1209,9 @@ VOID MY_CHOICE_PROC(VOID)
 	//左クリックしたら、プレイシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
+		//クリック音
+		PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
 		//BGMが流れているなら(変更：BGM_CHOICE→BGM_TITLE)
 		if (CheckSoundMem(BGM_TITLE.handle) != 0)
 		{
@@ -2288,6 +2302,16 @@ BOOL MY_LOAD_MUSIC(VOID)
 		return FALSE;
 	}
 
+	//クリック音
+	strcpy_s(BGM_CLICK.path, MUSIC_CLICK_PATH);				//パスの設定
+	BGM_CLICK.handle = LoadSoundMem(BGM_CLICK.path);		//読み込み
+	if (BGM_CLICK.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), MUSIC_CLICK_PATH, MUSIC_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+
 	//タイトルのBGM
 	strcpy_s(BGM_TITLE.path, MUSIC_BGM_TITLE_PATH);				//パスの設定
 	BGM_TITLE.handle = LoadSoundMem(BGM_TITLE.path);			//読み込み
@@ -2357,6 +2381,7 @@ VOID MY_DELETE_MUSIC(VOID)
 {
 	DeleteSoundMem(BGM.handle);
 	DeleteSoundMem(player.musicShot.handle);
+	DeleteSoundMem(BGM_CLICK.handle);
 	DeleteSoundMem(BGM_TITLE.handle);
 	DeleteSoundMem(BGM_COMP.handle);
 	DeleteSoundMem(BGM_FAIL.handle);

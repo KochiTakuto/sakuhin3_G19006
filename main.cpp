@@ -188,6 +188,10 @@ typedef struct STRUCT_IMAGE
 	int handle;					//ハンドル
 	int x;						//X位置
 	int y;						//Y位置
+	int Lx;						//左位置(x位置)
+	int Ly;						//左位置(y位置)
+	int Rx;						//右位置(x位置)
+	int Ry;						//右位置(y位置)
 	int width;					//幅
 	int height;					//高さ
 }IMAGE;	//画像構造体
@@ -1232,10 +1236,10 @@ VOID MY_CHOICE_PROC(VOID)
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
 		//リターンボタンを押したとき
-		if (ImageReturnButton.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
-			mouse.Point.x <= ImageReturnButton.x + ImageReturnButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
-			ImageReturnButton.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
-			mouse.Point.y <= ImageReturnButton.y + ImageReturnButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		if (ImageReturnButton.Lx <= mouse.Point.x &&							//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageReturnButton.Lx + ImageReturnButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageReturnButton.Ly <= mouse.Point.y &&							//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageReturnButton.Ly + ImageReturnButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
 		{
 			////BGMが流れているなら(変更：止めない)
 			//if (CheckSoundMem(BGM_CHOICE.handle) != 0)
@@ -1266,7 +1270,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	DrawGraph(ImageTitleBK.x, ImageTitleBK.y, ImageTitleBK.handle, TRUE);	//タイトル背景の描画
 
 	//背景を描画
-	DrawGraph(ImageReturnButton.x, ImageReturnButton.y, ImageReturnButton.handle, TRUE);	//リターンボタンの描画
+	DrawGraph(ImageReturnButton.Lx, ImageReturnButton.Ly, ImageReturnButton.handle, TRUE);	//リターンボタンの描画
 
 	DrawString(0, 0, "ステージ選択画面(右クリック(プレイ画面)画像クリック(メニュー画面))", GetColor(255, 0, 0));
 	return;
@@ -2075,7 +2079,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 
 	//リターンボタン(戻る)
 	strcpy_s(ImageReturnButton.path, IMAGE_RETURN_BUTTON_PATH);			//パスの設定
-	ImageReturnButton.handle = LoadGraph(ImageReturnButton.path);			//読み込み
+	ImageReturnButton.handle = LoadGraph(ImageReturnButton.path);		//読み込み
 	if (ImageReturnButton.handle == -1)
 	{
 		//エラーメッセージ表示
@@ -2085,6 +2089,10 @@ BOOL MY_LOAD_IMAGE(VOID)
 	GetGraphSize(ImageReturnButton.handle, &ImageReturnButton.width, &ImageReturnButton.height);	//画像の幅と高さを取得
 	ImageReturnButton.x = GAME_WIDTH / 2 - ImageReturnButton.width / 2;			//画面の左、1/2の場所に配置(描画する基準点をボタンの中央からに変更)
 	ImageReturnButton.y = GAME_HEIGHT * 0.75 - ImageReturnButton.height / 2;	//画面の下、1/4の場所に配置
+	ImageReturnButton.Lx = GAME_WIDTH / 4;										//画面の左、1/4の場所に配置(描画する基準点をボタンの左端からに変更)
+	ImageReturnButton.Ly = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;	//画面の下、1/4の場所に配置
+	ImageReturnButton.Rx = GAME_WIDTH * 0.75 - ImageSetupButton.width;			//画面の左、1/4の場所に配置(描画する基準点ををボタンの右端からに変更)
+	ImageReturnButton.Ry = GAME_HEIGHT * 0.75 - ImageSetupButton.height / 2;		//画面の下、1/4の場所に配置
 
 	//エンドコンプ
 	strcpy_s(ImageEndCOMP.image.path, IMAGE_END_COMP_PATH);					//パスの設定

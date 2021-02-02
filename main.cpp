@@ -1379,7 +1379,7 @@ VOID MY_PLAY_PROC(VOID)
 		ChangeVolumeSoundMem(255 * 50 / 100, BGM.handle);	//50%の音量にする
 
 		//BGMを流す
-		//DX_PLAYTYPE_NORMAL:ノーマル再生
+		//DX_PLAYTYPE_NORMAL: ノーマル再生
 		//DX_PLAYTYPE_BACK  : バックグラウンド再生
 		//DX_PLAYTYPE_LOOP  : ループ再生
 		PlaySoundMem(BGM.handle, DX_PLAYTYPE_LOOP);
@@ -1979,7 +1979,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面(クリックして下さい)", GetColor(255, 0, 0));
+	DrawString(0, 0, "エンド画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -2007,7 +2007,10 @@ VOID MY_CLEAR_PROC(VOID)
 //クリア画面の描画
 VOID MY_CLEAR_DRAW(VOID)
 {
-	DrawString(0, 0, "クリア画面(クリックして下さい)", GetColor(255, 0, 0));
+	//背景を描画
+	DrawGraph(ImageBack[0].image.x, ImageBack[0].image.y, ImageBack[0].image.handle, TRUE);
+
+	DrawString(0, 0, "クリア画面", GetColor(0, 0, 0));
 	return;
 }
 

@@ -201,6 +201,8 @@ typedef struct STRUCT_MUSIC
 {
 	char path[PATH_MAX];		//パス
 	int handle;					//ハンドル
+
+	BOOL BGM_Comp_Check;		//コンプリート専用のチェッカー(追加)
 }MUSIC;	//音楽構造体
 
 typedef struct STRUCT_TAMA
@@ -448,6 +450,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	player.CanShot = TRUE;
 	player.ShotReLoadCnt = 0;
 	player.ShotReLoadCntMAX = CHARA_RELOAD_HIGH;
+
+	//BGMの設定(COMP)
+	BGM_COMP.BGM_Comp_Check = TRUE;
 
 	//フォントを一時的にインストール
 	if (MY_FONT_INSTALL_ONCE() == FALSE) { return -1; }
@@ -1546,6 +1551,8 @@ VOID MY_PLAY_PROC(VOID)
 
 		GameScene = GAME_SCENE_END;
 
+		BGM_COMP.BGM_Comp_Check = TRUE;
+
 		return;	//強制的にエンド画面に飛ぶ
 	}
 
@@ -1885,13 +1892,25 @@ VOID MY_END_PROC(VOID)
 	case GAME_END_COMP:
 		//コンプリートのとき
 
-		//BGMが流れていないなら
-		if (CheckSoundMem(BGM_COMP.handle) == 0)
+		if (BGM_COMP.BGM_Comp_Check == TRUE)
 		{
-			//BGMの音量を下げる
-			ChangeVolumeSoundMem(255 * 50 / 100, BGM_COMP.handle);	//50%の音量にする
-			PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
+			//BGMが流れていないなら
+			if (CheckSoundMem(BGM_COMP.handle) == 0)
+			{
+				//BGMの音量を下げる
+				ChangeVolumeSoundMem(255 * 50 / 100, BGM_COMP.handle);	//50%の音量にする
+				PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
+				BGM_COMP.BGM_Comp_Check = FALSE;
+			}
 		}
+
+		////BGMが流れていないなら
+		//if (CheckSoundMem(BGM_COMP.handle) == 0)
+		//{
+		//	//BGMの音量を下げる
+		//	ChangeVolumeSoundMem(255 * 50 / 100, BGM_COMP.handle);	//50%の音量にする
+		//	PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
+		//}
 
 		//コンプリートを点滅
 		if (ImageEndCOMP.Cnt < ImageEndCOMP.CntMAX)

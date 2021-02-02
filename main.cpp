@@ -1486,7 +1486,8 @@ VOID MY_PLAY_PROC(VOID)
 		player.CenterX = player.collBeforePt.x;
 		player.CenterY = player.collBeforePt.y;
 
-		SetMousePoint(player.collBeforePt.x, player.collBeforePt.y);
+		//(変更削除：マップにあたるたびマウスの位置が強制的に移動させられていたので消しました)
+		//SetMousePoint(player.collBeforePt.x, player.collBeforePt.y);
 		IsMove = FALSE;
 	}
 

@@ -114,7 +114,7 @@
 
 //終了ダイアログ用
 #define MOUSE_R_CLICK_TITLE		TEXT("ゲーム中断")
-#define MOUSE_R_CLICK_CAPTION	TEXT("ゲームを中断し、タイトル画面に戻りますか？")
+#define MOUSE_R_CLICK_CAPTION	TEXT("ゲームを中断し、メニュー画面に戻りますか？")
 
 enum GAME_MAP_KIND
 {
@@ -1407,8 +1407,8 @@ VOID MY_PLAY_PROC(VOID)
 
 			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
 
-			//強制的にタイトル画面に飛ぶ
-			GameScene = GAME_SCENE_START;
+			//強制的にメニュー画面に飛ぶ
+			GameScene = GAME_SCENE_MENU;
 			return;
 
 		}

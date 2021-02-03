@@ -3,8 +3,8 @@
 #include "resource.h"
 
 //マクロ定義
-#define GAME_WIDTH			1920	//画面の横の大きさ(800)
-#define GAME_HEIGHT			1010	//画面の縦の大きさ(600)
+#define GAME_WIDTH			1800	//画面の横の大きさ(800)
+#define GAME_HEIGHT			960		//画面の縦の大きさ(600)
 
 #define GAME_WINDOW_BAR		0				//タイトルバーはデフォルト
 #define GAME_WINDOW_NAME	"Sea Protecter"	//ウィンドウのタイトル
@@ -94,8 +94,8 @@
 //#define MUSIC_BGM_FAIL_PATH	TEXT(".\\MUSIC\\衛星の夜.mp3")				//フォールトBGM
 #define MUSIC_BGM_FAIL_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//フォールトBGM(試験的に)
 
-#define GAME_MAP_TATE_MAX	9	//マップの縦の数
-#define GAME_MAP_YOKO_MAX	13	//マップの横の数
+#define GAME_MAP_TATE_MAX	15	//マップの縦の数(もとは9)
+#define GAME_MAP_YOKO_MAX	30	//マップの横の数(もとは13)
 #define GAME_MAP_KIND_MAX	2	//マップの種類の数
 
 #define GAME_MAP_PATH			TEXT(".\\IMAGE\\MAP\\map.png")		//マップの画像
@@ -335,16 +335,23 @@ MUSIC BGM_COMP;		//コンプリートのBGM
 MUSIC BGM_FAIL;		//フォールトのBGM
 
 GAME_MAP_KIND mapData[GAME_MAP_TATE_MAX][GAME_MAP_YOKO_MAX]{
-	//  0,1,2,3,4,5,6,7,8,9,0,1,2,
-		k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 1
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 2
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 3
-		g,t,t,t,t,t,t,t,t,t,t,t,s,	// 4
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 5
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 6
-		k,t,t,t,t,t,t,t,t,t,t,t,k,	// 7
-		k,k,k,k,k,k,k,k,k,k,k,k,k,	// 8
+	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,
+		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 1
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 2
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 3
+		t,t,t,t,t,t,t,t,t,g,t,t,t,t,t,t,t,t,t,s,t,t,t,t,t,t,t,t,t,t,	// 4
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 5
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 6
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 7
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 8
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 9
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 0
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 1
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 2
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 3
+		//t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 4
+		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 5
 };	//ゲームのマップ
 
 //ゲームマップの初期化

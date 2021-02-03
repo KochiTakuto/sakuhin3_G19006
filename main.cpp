@@ -91,7 +91,8 @@
 #define MUSIC_BGM_CHOICE_PATH	TEXT(".\\MUSIC\\レトロシューティング.mp3")	//ステージ選択画面のBGM
 #define MUSIC_BGM_SETUP_PATH	TEXT(".\\MUSIC\\ウォータートンネル.mp3")	//設定のBGM
 #define MUSIC_BGM_COMP_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//コンプリートBGM
-#define MUSIC_BGM_FAIL_PATH		TEXT(".\\MUSIC\\衛星の夜.mp3")				//フォールトBGM
+//#define MUSIC_BGM_FAIL_PATH	TEXT(".\\MUSIC\\衛星の夜.mp3")				//フォールトBGM
+#define MUSIC_BGM_FAIL_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//フォールトBGM(試験的に)
 
 #define GAME_MAP_TATE_MAX	9	//マップの縦の数
 #define GAME_MAP_YOKO_MAX	13	//マップの横の数
@@ -202,7 +203,7 @@ typedef struct STRUCT_MUSIC
 	char path[PATH_MAX];		//パス
 	int handle;					//ハンドル
 
-	BOOL BGM_Comp_Check;		//コンプリート専用のチェッカー(追加)
+	BOOL Check;					//チェッカー(追加)
 }MUSIC;	//音楽構造体
 
 typedef struct STRUCT_TAMA
@@ -451,8 +452,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	player.ShotReLoadCnt = 0;
 	player.ShotReLoadCntMAX = CHARA_RELOAD_HIGH;
 
-	//BGMの設定(COMP)
-	BGM_COMP.BGM_Comp_Check = TRUE;
+	////BGMの設定(COMP・いらなかったので削除)
+	//BGM_COMP.Check = TRUE;
 
 	//フォントを一時的にインストール
 	if (MY_FONT_INSTALL_ONCE() == FALSE) { return -1; }
@@ -1551,7 +1552,7 @@ VOID MY_PLAY_PROC(VOID)
 
 		GameScene = GAME_SCENE_END;
 
-		BGM_COMP.BGM_Comp_Check = TRUE;
+		BGM_COMP.Check = TRUE;
 
 		return;	//強制的にエンド画面に飛ぶ
 	}
@@ -1571,6 +1572,8 @@ VOID MY_PLAY_PROC(VOID)
 		GameEndKind = GAME_END_FAIL;	//ミッションフォールト！
 
 		GameScene = GAME_SCENE_END;
+
+		BGM_FAIL.Check = TRUE;
 
 		return;	//強制的にエンド画面に飛ぶ
 	}
@@ -1892,7 +1895,7 @@ VOID MY_END_PROC(VOID)
 	case GAME_END_COMP:
 		//コンプリートのとき
 
-		if (BGM_COMP.BGM_Comp_Check == TRUE)
+		if (BGM_COMP.Check == TRUE)
 		{
 			//BGMが流れていないなら
 			if (CheckSoundMem(BGM_COMP.handle) == 0)
@@ -1900,7 +1903,7 @@ VOID MY_END_PROC(VOID)
 				//BGMの音量を下げる
 				ChangeVolumeSoundMem(255 * 50 / 100, BGM_COMP.handle);	//50%の音量にする
 				PlaySoundMem(BGM_COMP.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
-				BGM_COMP.BGM_Comp_Check = FALSE;
+				BGM_COMP.Check = FALSE;
 			}
 		}
 
@@ -1935,13 +1938,25 @@ VOID MY_END_PROC(VOID)
 	case GAME_END_FAIL:
 		//フォールトのとき
 
-		//BGMが流れていないなら
-		if (CheckSoundMem(BGM_FAIL.handle) == 0)
+		if (BGM_FAIL.Check == TRUE)
 		{
-			//BGMの音量を下げる
-			ChangeVolumeSoundMem(255 * 50 / 100, BGM_FAIL.handle);	//50%の音量にする
-			PlaySoundMem(BGM_FAIL.handle, DX_PLAYTYPE_LOOP);		//音ファイルを再生する・LOOP(ループ)再生で
+			//BGMが流れていないなら
+			if (CheckSoundMem(BGM_FAIL.handle) == 0)
+			{
+				//BGMの音量を下げる
+				ChangeVolumeSoundMem(255 * 50 / 100, BGM_FAIL.handle);	//50%の音量にする
+				PlaySoundMem(BGM_FAIL.handle, DX_PLAYTYPE_BACK);		//音ファイルを再生する・NOMAL(ノーマル)再生で
+				BGM_FAIL.Check = FALSE;
+			}
 		}
+
+		////BGMが流れていないなら
+		//if (CheckSoundMem(BGM_FAIL.handle) == 0)
+		//{
+		//	//BGMの音量を下げる
+		//	ChangeVolumeSoundMem(255 * 50 / 100, BGM_FAIL.handle);	//50%の音量にする
+		//	PlaySoundMem(BGM_FAIL.handle, DX_PLAYTYPE_LOOP);		//音ファイルを再生する・LOOP(ループ)再生で
+		//}
 
 		//フォールトを点滅
 		if (ImageEndFAIL.Cnt < ImageEndFAIL.CntMAX)

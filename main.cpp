@@ -45,6 +45,9 @@
 #define IMAGE_TITLE_START_CNT_MAX	30			//点滅カウンタMAX(元は30)
 
 #define IMAGE_STAGE_BUTTON_PATH		TEXT(".\\IMAGE\\ステージボタン.png")	//ステージ選択ボタンの画像
+#define IMAGE_STAGE1_BUTTON_PATH	TEXT(".\\IMAGE\\ステージ１.png")		//ステージ１の画像
+#define IMAGE_STAGE2_BUTTON_PATH	TEXT(".\\IMAGE\\ステージ２.png")		//ステージ２の画像
+#define IMAGE_STAGE3_BUTTON_PATH	TEXT(".\\IMAGE\\ステージ３.png")		//ステージ２の画像
 #define IMAGE_SETUP_BUTTON_PATH		TEXT(".\\IMAGE\\設定ボタン.png")		//ステージ選択ボタンの画像
 #define IMAGE_RETURN_BUTTON_PATH	TEXT(".\\IMAGE\\リターンボタン.png")	//リターンボタンの画像
 #define IMAGE_NEXT_BUTTON_PATH		TEXT(".\\IMAGE\\ネクストボタン.png")	//ネクストボタンの画像
@@ -296,7 +299,7 @@ float CalcFps;					//計算結果
 int SampleNumFps = GAME_FPS;	//平均を取るサンプル数
 
 //キーボードの入力を取得
-char AllKeyState[256] = { '\0' };			//すべてのキーの状態が入る
+char AllKeyState[256] = { '\0' };		//すべてのキーの状態が入る
 char OldAllKeyState[256] = { '\0' };	//すべてのキーの状態(直前)が入る
 
 //マウスの座標を取得
@@ -305,6 +308,7 @@ MOUSE mouse;
 FONT FontTanu32;	//たぬき油性マジック：大きさ32　のフォント構造体
 
 int GameScene;		//ゲームシーンを管理
+int StageNo;		//ステージナンバーを管理
 
 int GameEndKind;					//ゲームの終了状態
 RECT GoalRect = { -1,-1, -1, -1 };	//ゴールの当たり判定
@@ -317,6 +321,9 @@ IMAGE_BLINK ImageTitleSTART;			//タイトルスタートの画像
 
 IMAGE ImageStartButton;					//ステージ選択ボタンの画像
 IMAGE ImageSetupButton;					//設定ボタンの画像
+IMAGE ImageStageButton1;				//ステージ１の画像
+IMAGE ImageStageButton2;				//ステージ２の画像
+IMAGE ImageStageButton3;				//ステージ２の画像
 IMAGE ImageReturnButton;				//リターンボタンの画像
 IMAGE ImageNextButton;					//ネクストボタンの画像
 
@@ -1269,11 +1276,11 @@ VOID MY_CHOICE_PROC(VOID)
 	//左クリックしたら、プレイシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
-		//リターンボタンを押したとき
-		if (ImageNextButton.x <= mouse.Point.x &&							//ボタン画像X(ボタン座標の最小値) <= マウス座標X
-			mouse.Point.x <= ImageNextButton.x + ImageNextButton.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
-			ImageNextButton.y <= mouse.Point.y &&							//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
-			mouse.Point.y <= ImageNextButton.y + ImageNextButton.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		//ステージ１ボタンを押したとき
+		if (ImageStageButton1.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageStageButton1.x + ImageStageButton1.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageStageButton1.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageStageButton1.y + ImageStageButton1.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
 		{
 			//クリック音
 			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
@@ -1289,8 +1296,61 @@ VOID MY_CHOICE_PROC(VOID)
 			//ゲームの終了状態を初期化する
 			GameEndKind = GAME_END_FAIL;
 
+			StageNo = 1;	//ステージナンバー１にする
+
 			GameScene = GAME_SCENE_PLAY;
 		}
+
+		//ステージ２ボタンを押したとき
+		if (ImageStageButton2.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageStageButton2.x + ImageStageButton2.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageStageButton2.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageStageButton2.y + ImageStageButton2.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		{
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
+			//BGMが流れているなら(変更：BGM_CHOICE→BGM_TITLE)
+			if (CheckSoundMem(BGM_TITLE.handle) != 0)
+			{
+				StopSoundMem(BGM_TITLE.handle);	//BGMを止める
+			}
+
+			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
+
+			//ゲームの終了状態を初期化する
+			GameEndKind = GAME_END_FAIL;
+
+			StageNo = 2;	//ステージナンバー２にする
+
+			GameScene = GAME_SCENE_PLAY;
+		}
+
+		//ステージ３ボタンを押したとき
+		if (ImageStageButton3.x <= mouse.Point.x &&								//ボタン画像X(ボタン座標の最小値) <= マウス座標X
+			mouse.Point.x <= ImageStageButton3.x + ImageStageButton3.width &&	//マウス座標X <= ボタン画像X(ボタン座標の最大値)
+			ImageStageButton3.y <= mouse.Point.y &&								//ボタン画像Y(ボタン座標の最小値) <= マウス座標Y
+			mouse.Point.y <= ImageStageButton3.y + ImageStageButton3.height)	//マウス座標Y <= ボタン画像Y(ボタン座標の最大値)
+		{
+			//クリック音
+			PlaySoundMem(BGM_CLICK.handle, DX_PLAYTYPE_BACK);
+
+			//BGMが流れているなら(変更：BGM_CHOICE→BGM_TITLE)
+			if (CheckSoundMem(BGM_TITLE.handle) != 0)
+			{
+				StopSoundMem(BGM_TITLE.handle);	//BGMを止める
+			}
+
+			SetMouseDispFlag(TRUE);			//マウスカーソルを表示
+
+			//ゲームの終了状態を初期化する
+			GameEndKind = GAME_END_FAIL;
+
+			StageNo = 3;	//ステージナンバー２にする
+
+			GameScene = GAME_SCENE_PLAY;
+		}
+
 	}
 
 	//左クリックしたら、メニューシーンへ戻る
@@ -1334,7 +1394,16 @@ VOID MY_CHOICE_DRAW(VOID)
 	DrawGraph(ImageReturnButton.Lx, ImageReturnButton.Ly, ImageReturnButton.handle, TRUE);	//リターンボタンの描画
 
 	//背景を描画
-	DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);			//ネクストボタンの描画
+	DrawGraph(ImageStageButton1.x, ImageStageButton1.y, ImageStageButton1.handle, TRUE);	//ステージ１ボタンの描画
+
+	//背景を描画
+	DrawGraph(ImageStageButton2.x, ImageStageButton2.y, ImageStageButton2.handle, TRUE);	//ステージ２ボタンの描画
+
+	//背景を描画
+	DrawGraph(ImageStageButton3.x, ImageStageButton3.y, ImageStageButton3.handle, TRUE);	//ステージ３ボタンの描画
+
+	////背景を描画
+	//DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);			//ネクストボタンの描画
 
 	DrawString(0, 0, "ステージ選択", GetColor(0, 0, 0));
 	return;
@@ -1424,8 +1493,30 @@ VOID MY_SETUP_DRAW(VOID)
 //プレイ画面
 VOID MY_PLAY(VOID)
 {
-	MY_PLAY_PROC();	//プレイ画面の処理
-	MY_PLAY_DRAW();	//プレイ画面の描画
+	switch (StageNo)
+	{
+	case 1:
+	{
+		MY_PLAY_PROC();	//プレイ画面の処理
+		MY_PLAY_DRAW();	//プレイ画面の描画
+		break;
+	}
+	case 2:
+	{
+		MY_PLAY_PROC();	//プレイ画面の処理
+		MY_PLAY_DRAW();	//プレイ画面の描画
+		break;
+	}
+	case 3:
+	{
+		MY_PLAY_PROC();	//プレイ画面の処理
+		MY_PLAY_DRAW();	//プレイ画面の描画
+		break;
+	}
+
+	default:
+		break;
+	}
 
 	return;
 }
@@ -2207,6 +2298,45 @@ BOOL MY_LOAD_IMAGE(VOID)
 	ImageStartButton.x = GAME_WIDTH / 4;										//画面の左、1/4の場所に配置(描画する基準点をボタンの左端からに変更)
 	ImageStartButton.y = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;		//画面の下、1/4の場所に配置
 
+	//ステージ１ボタン
+	strcpy_s(ImageStageButton1.path, IMAGE_STAGE1_BUTTON_PATH);		//パスの設定
+	ImageStageButton1.handle = LoadGraph(ImageStageButton1.path);	//読み込み
+	if (ImageStageButton1.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_STAGE1_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageStageButton1.handle, &ImageStageButton1.width, &ImageStageButton1.height);	//画像の幅と高さを取得
+	ImageStageButton1.x = GAME_WIDTH / 2 - ImageStageButton1.width / 2;		//画面中央に配置
+	ImageStageButton1.y = GAME_HEIGHT /4 - ImageStageButton1.height / 2;	//画面の上、1/4の場所に配置
+
+	//ステージ２ボタン
+	strcpy_s(ImageStageButton2.path, IMAGE_STAGE2_BUTTON_PATH);		//パスの設定
+	ImageStageButton2.handle = LoadGraph(ImageStageButton2.path);	//読み込み
+	if (ImageStageButton2.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_STAGE2_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageStageButton2.handle, &ImageStageButton2.width, &ImageStageButton2.height);	//画像の幅と高さを取得
+	ImageStageButton2.x = GAME_WIDTH / 2 - ImageStageButton2.width / 2;		//画面中央に配置
+	ImageStageButton2.y = GAME_HEIGHT / 2 - ImageStageButton2.height / 2;	//画面中央に配置
+
+	//ステージ３ボタン
+	strcpy_s(ImageStageButton3.path, IMAGE_STAGE3_BUTTON_PATH);		//パスの設定
+	ImageStageButton3.handle = LoadGraph(ImageStageButton3.path);	//読み込み
+	if (ImageStageButton3.handle == -1)
+	{
+		//エラーメッセージ表示
+		MessageBox(GetMainWindowHandle(), IMAGE_STAGE3_BUTTON_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		return FALSE;
+	}
+	GetGraphSize(ImageStageButton3.handle, &ImageStageButton3.width, &ImageStageButton3.height);	//画像の幅と高さを取得
+	ImageStageButton3.x = GAME_WIDTH / 2 - ImageStageButton3.width / 2;			//画面中央に配置
+	ImageStageButton3.y = GAME_HEIGHT * 0.75 - ImageStageButton3.height / 2;	//画面下4/1に配置
+
 	//設定ボタン
 	strcpy_s(ImageSetupButton.path, IMAGE_SETUP_BUTTON_PATH);			//パスの設定
 	ImageSetupButton.handle = LoadGraph(ImageSetupButton.path);			//読み込み
@@ -2231,12 +2361,19 @@ BOOL MY_LOAD_IMAGE(VOID)
 		return FALSE;
 	}
 	GetGraphSize(ImageReturnButton.handle, &ImageReturnButton.width, &ImageReturnButton.height);	//画像の幅と高さを取得
-	ImageReturnButton.x = GAME_WIDTH / 2 - ImageReturnButton.width / 2;			//画面の左、1/2の場所に配置(描画する基準点をボタンの中央からに変更)
-	ImageReturnButton.y = GAME_HEIGHT * 0.75 - ImageReturnButton.height / 2;	//画面の下、1/4の場所に配置
-	ImageReturnButton.Lx = GAME_WIDTH / 4;										//画面の左、1/4の場所に配置(描画する基準点をボタンの左端からに変更)
-	ImageReturnButton.Ly = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;	//画面の下、1/4の場所に配置
-	ImageReturnButton.Rx = GAME_WIDTH * 0.75 - ImageSetupButton.width;			//画面の左、1/4の場所に配置(描画する基準点ををボタンの右端からに変更)
-	ImageReturnButton.Ry = GAME_HEIGHT * 0.75 - ImageSetupButton.height / 2;	//画面の下、1/4の場所に配置
+	//ImageReturnButton.x = GAME_WIDTH / 2 - ImageReturnButton.width / 2;			//画面の左、1/2の場所に配置(描画する基準点をボタンの中央からに変更)
+	//ImageReturnButton.y = GAME_HEIGHT * 0.75 - ImageReturnButton.height / 2;	//画面の下、1/4の場所に配置
+	//ImageReturnButton.Lx = GAME_WIDTH / 4;										//画面の左、1/4の場所に配置(描画する基準点をボタンの左端からに変更)
+	//ImageReturnButton.Ly = GAME_HEIGHT * 0.75 - ImageStartButton.height / 2;	//画面の下、1/4の場所に配置
+	//ImageReturnButton.Rx = GAME_WIDTH * 0.75 - ImageSetupButton.width;			//画面の左、1/4の場所に配置(描画する基準点ををボタンの右端からに変更)
+	//ImageReturnButton.Ry = GAME_HEIGHT * 0.75 - ImageSetupButton.height / 2;	//画面の下、1/4の場所に配置
+
+	ImageReturnButton.x = GAME_WIDTH / GAME_WIDTH;					//画面の左端に配置
+	ImageReturnButton.y = GAME_HEIGHT - ImageReturnButton.height;	//画面の下端＋画像分上に配置
+	ImageReturnButton.Lx = GAME_WIDTH / GAME_WIDTH;					//画面の左端に配置
+	ImageReturnButton.Ly = GAME_HEIGHT - ImageReturnButton.height;	//画面の下端＋画像分上に配置
+	ImageReturnButton.Rx = GAME_WIDTH / GAME_WIDTH;					//画面の左端に配置
+	ImageReturnButton.Ry = GAME_HEIGHT - ImageReturnButton.height;	//画面の下端＋画像分上に配置
 
 	//ネクストボタン(次へ進む)
 	strcpy_s(ImageNextButton.path, IMAGE_NEXT_BUTTON_PATH);			//パスの設定
@@ -2476,6 +2613,9 @@ VOID MY_DELETE_IMAGE(VOID)
 	DeleteGraph(ImageTitleROGO.image.handle);
 	DeleteGraph(ImageTitleSTART.image.handle);
 	DeleteGraph(ImageStartButton.handle);
+	DeleteGraph(ImageStageButton1.handle);
+	DeleteGraph(ImageStageButton2.handle);
+	DeleteGraph(ImageStageButton3.handle);
 	DeleteGraph(ImageSetupButton.handle);
 	DeleteGraph(ImageReturnButton.handle);
 	DeleteGraph(ImageNextButton.handle);

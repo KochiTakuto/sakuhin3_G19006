@@ -3,8 +3,8 @@
 #include "resource.h"
 
 //マクロ定義
-#define GAME_WIDTH			1800	//画面の横の大きさ(800)
-#define GAME_HEIGHT			960		//画面の縦の大きさ(600)
+#define GAME_WIDTH			1920	//画面の横の大きさ(800)
+#define GAME_HEIGHT			1080	//画面の縦の大きさ(600)
 
 #define GAME_WINDOW_BAR		0				//タイトルバーはデフォルト
 #define GAME_WINDOW_NAME	"Sea Protecter"	//ウィンドウのタイトル
@@ -116,6 +116,9 @@
 //終了ダイアログ用
 #define MOUSE_R_CLICK_TITLE		TEXT("ゲーム中断")
 #define MOUSE_R_CLICK_CAPTION	TEXT("ゲームを中断し、メニュー画面に戻りますか？")
+
+#define KEY_END_TITLE			TEXT("ゲーム終了")
+#define KEY_END_TITLE_CAPTION	TEXT("ゲームを終了しますか？")
 
 enum GAME_MAP_KIND
 {
@@ -881,6 +884,18 @@ VOID MY_START(VOID)
 //スタート画面の処理
 VOID MY_START_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
@@ -1115,6 +1130,18 @@ VOID MY_MENU(VOID)
 //メニュー画面の処理
 VOID MY_MENU_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
@@ -1218,6 +1245,18 @@ VOID MY_CHOICE(VOID)
 //ステージ選択画面の処理
 VOID MY_CHOICE_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
@@ -1313,6 +1352,18 @@ VOID MY_SETUP(VOID)
 //設定画面の処理
 VOID MY_SETUP_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//BGMが流れていないなら
 	if (CheckSoundMem(BGM_TITLE.handle) == 0)
 	{
@@ -1382,6 +1433,18 @@ VOID MY_PLAY(VOID)
 //プレイ画面の処理
 VOID MY_PLAY_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//マウスカーソルの座標を取得
 	GetMousePoint(&mouse.Point.x, &mouse.Point.y);
 
@@ -1578,7 +1641,7 @@ VOID MY_PLAY_PROC(VOID)
 
 		GameEndKind = GAME_END_FAIL;	//ミッションフォールト！
 
-		GameScene = GAME_SCENE_END;
+		GameScene = GAME_SCENE_END;		//エンド画面に移動
 
 		BGM_FAIL.Check = TRUE;
 
@@ -1875,6 +1938,18 @@ VOID MY_END(VOID)
 //エンド画面の処理
 VOID MY_END_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//左クリックしたら、クリアシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{
@@ -2037,6 +2112,18 @@ VOID MY_CLEAR(VOID)
 //クリア画面の処理
 VOID MY_CLEAR_PROC(VOID)
 {
+	//エスケープキーが押されたとき終了
+	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
+	{
+		//終了ダイアログを表示
+		int Ret = MessageBox(GetMainWindowHandle(), KEY_END_TITLE_CAPTION, KEY_END_TITLE, MB_YESNO);
+
+		if (Ret == IDYES)	//YESなら、ゲームを中断する
+		{
+			DxLib_End();	//ＤＸライブラリ使用の終了処理
+		}
+	}
+
 	//左クリックしたら、メニューシーンへ移動する
 	if (MY_MOUSE_PUSH(MOUSE_INPUT_LEFT) == TRUE)
 	{

@@ -97,17 +97,19 @@
 //#define MUSIC_BGM_FAIL_PATH	TEXT(".\\MUSIC\\衛星の夜.mp3")				//フォールトBGM
 #define MUSIC_BGM_FAIL_PATH		TEXT(".\\MUSIC\\ジングル素材07.mp3")		//フォールトBGM(試験的に)
 
-#define GAME_MAP_TATE_MAX	15	//マップの縦の数(もとは9)
-#define GAME_MAP_YOKO_MAX	30	//マップの横の数(もとは13)
+#define GAME_MAP_TATE_MAX	9	//マップの縦の数(もとは9)
+#define GAME_MAP_YOKO_MAX	16	//マップの横の数(もとは13)
 #define GAME_MAP_KIND_MAX	2	//マップの種類の数
 
-#define GAME_MAP_PATH			TEXT(".\\IMAGE\\MAP\\map.png")		//マップの画像
+//#define GAME_MAP_PATH			TEXT(".\\IMAGE\\MAP\\map.png")			//マップの画像
+#define GAME_MAP_PATH			TEXT(".\\IMAGE\\MAP\\MAP_120px.png")	//マップの画像
 
-#define MAP_DIV_WIDTH		64	//画像を分割する幅サイズ
-#define MAP_DIV_HEIGHT		64	//画像を分割する高さサイズ
-#define MAP_DIV_TATE		10	//画像を縦に分割する数
-#define MAP_DIV_YOKO		4	//画像を横に分割する数
-#define MAP_DIV_NUM	MAP_DIV_TATE * MAP_DIV_YOKO	//画像を分割する総数
+#define MAP_DIV_WIDTH		120	//画像を分割する幅サイズ(元は64)
+#define MAP_DIV_HEIGHT		120	//画像を分割する高さサイズ(元は64)
+#define MAP_DIV_TATE		16	//画像を縦に分割する数(元は10)
+#define MAP_DIV_YOKO		9	//画像を横に分割する数(元は4)
+//#define MAP_DIV_NUM	MAP_DIV_TATE * MAP_DIV_YOKO	//画像を分割する総数
+#define MAP_DIV_NUM	9		//画像を分割する総数
 
 //エラーメッセージ
 #define START_ERR_TITLE		TEXT("スタート位置エラー")
@@ -345,23 +347,16 @@ MUSIC BGM_COMP;		//コンプリートのBGM
 MUSIC BGM_FAIL;		//フォールトのBGM
 
 GAME_MAP_KIND mapData[GAME_MAP_TATE_MAX][GAME_MAP_YOKO_MAX]{
-	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,6,7,8,9,
-		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 1
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 2
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 3
-		t,t,t,t,t,t,t,t,t,g,t,t,t,t,t,t,t,t,t,s,t,t,t,t,t,t,t,t,t,t,	// 4
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 5
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 6
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 7
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 8
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 9
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 0
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 1
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 2
-		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 3
-		//t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 4
-		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 5
+	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,
+		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 1
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 2
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 3
+		k,t,t,s,t,t,t,t,t,g,t,t,t,t,t,k,	// 4
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 5
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 6
+		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 7
+		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 8
 };	//ゲームのマップ
 
 //ゲームマップの初期化
@@ -1403,7 +1398,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	DrawGraph(ImageStageButton3.x, ImageStageButton3.y, ImageStageButton3.handle, TRUE);	//ステージ３ボタンの描画
 
 	////背景を描画
-	//DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);			//ネクストボタンの描画
+	//DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);		//ネクストボタンの描画
 
 	DrawString(0, 0, "ステージ選択", GetColor(0, 0, 0));
 	return;
@@ -2773,3 +2768,4 @@ BOOL MY_CHECK_RECT_COLL(RECT a, RECT b)
 
 	return FALSE;		//当たっていない
 }
+     

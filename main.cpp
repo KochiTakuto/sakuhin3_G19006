@@ -178,6 +178,7 @@ typedef struct STRUCT_MOUSE
 	int WheelValue = 0;	//マウスホイールの回転量(奥はプラス値 / 手前はマイナス値)
 	iPOINT Point;		//マウスの座標が入る
 	iPOINT OldPoint;	//マウスの座標(直前)が入る
+	iPOINT Left_OldButton;	//マウスの左クリックしたときの座標(直前)が入る(プレイ画面のみ使用)
 	int OldButton[MOUSE_BUTTON_CODE] = { 0 };	//マウスのボタン入力(直前)が入る
 	int Button[MOUSE_BUTTON_CODE] = { 0 };	//マウスのボタン入力が入る
 }MOUSE;
@@ -1788,6 +1789,8 @@ VOID MY_PLAY_PROC(VOID)
 			PlaySoundMem(player.musicShot.handle, DX_PLAYTYPE_BACK);
 			player.CanShot = FALSE;
 
+			mouse.Left_OldButton = mouse.Point;	//左クリックしたときの座標を取得
+
 			//空いているスロットで、弾の描画をする
 			for (int cnt = 0; cnt < TAMA_MAX; cnt++)
 			{
@@ -1975,7 +1978,7 @@ VOID MY_PLAY_DRAW(VOID)
 				player.tama[cnt].changeImageCnt = 0;
 			}
 
-			if (mouse.Point.x < player.image.x)	//マウスのX位置がプレイヤーより小さいとき(変更：追加)
+			if (mouse.Left_OldButton.x < player.image.x)	//左クリックを押したときの座標とプレイヤーの画像を比較
 			{
 				//弾を左に移動させる(変更)
 				if (player.tama[cnt].x < 0)		//x座標が0より小さいときは描画しないってこと、違うなら弾移動させてる

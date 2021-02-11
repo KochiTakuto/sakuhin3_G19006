@@ -32,8 +32,10 @@
 
 //画像のパス
 #define IMAGE_BACK_PATH			TEXT(".\\IMAGE\\Sea.jpg")		//背景の画像
-#define IMAGE_PLAYER_PATH		TEXT(".\\IMAGE\\イルカ.png")	//プレイヤーの画像
-#define IMAGE_PLAYERBACK_PATH	TEXT(".\\IMAGE\\イルカ反転.png")//プレイヤー(反転)の画像
+//#define IMAGE_PLAYER_PATH		TEXT(".\\IMAGE\\イルカ.png")	//プレイヤーの画像
+//#define IMAGE_PLAYERBACK_PATH	TEXT(".\\IMAGE\\イルカ反転.png")//プレイヤー(反転)の画像
+#define IMAGE_PLAYER_PATH		TEXT(".\\IMAGE\\イルカ_120px.png")		//プレイヤーの画像
+#define IMAGE_PLAYERBACK_PATH	TEXT(".\\IMAGE\\イルカ反転_120px.png")	//プレイヤー(反転)の画像
 
 #define IMAGE_TITLE_BK_PATH			TEXT(".\\IMAGE\\タイトル海.jpg")	//タイトル背景の画像
 #define IMAGE_TITLE_ROGO_PATH		TEXT(".\\IMAGE\\タイトルロゴ.png")	//タイトルロゴの画像
@@ -109,7 +111,7 @@
 #define MAP_DIV_TATE		16	//画像を縦に分割する数(元は10)
 #define MAP_DIV_YOKO		9	//画像を横に分割する数(元は4)
 //#define MAP_DIV_NUM	MAP_DIV_TATE * MAP_DIV_YOKO	//画像を分割する総数
-#define MAP_DIV_NUM	9		//画像を分割する総数
+#define MAP_DIV_NUM			9	//画像を分割する総数
 
 //エラーメッセージ
 #define START_ERR_TITLE		TEXT("スタート位置エラー")
@@ -347,12 +349,12 @@ MUSIC BGM_COMP;		//コンプリートのBGM
 MUSIC BGM_FAIL;		//フォールトのBGM
 
 GAME_MAP_KIND mapData[GAME_MAP_TATE_MAX][GAME_MAP_YOKO_MAX]{
-	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,
+	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5
 		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 1
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 2
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 3
-		k,t,t,s,t,t,t,t,t,g,t,t,t,t,t,k,	// 4
+		k,t,t,g,t,t,t,t,t,t,t,t,s,t,t,k,	// 4
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 5
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 6
 		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 7

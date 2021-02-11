@@ -1790,15 +1790,16 @@ VOID MY_PLAY_PROC(VOID)
 			player.CanShot = FALSE;
 
 			mouse.Left_OldButton = mouse.Point;	//左クリックしたときの座標を取得
+			//player.
 
 			//空いているスロットで、弾の描画をする
 			for (int cnt = 0; cnt < TAMA_MAX; cnt++)
 			{
 				if (player.tama[cnt].IsDraw == FALSE)
 				{
-					//弾をY位置の中心から発射する(変更)
-					////弾のX位置はプレイヤーの左部分から発射
-					//player.tama[cnt].x = player.image.x;
+					//弾をY位置の中心から発射する(変更削除)
+					/*弾のX位置はプレイヤーの左部分から発射
+					//player.tama[cnt].x = player.image.x;*/
 
 					//(変更：X位置の中心から発射)
 					//弾のX位置はプレイヤーの左部分から発射
@@ -1994,7 +1995,7 @@ VOID MY_PLAY_DRAW(VOID)
 			else
 			{
 				//弾を右に移動させる(変更)
-				if (player.tama[cnt].x > GAME_WIDTH)		//x座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
+				if (player.tama[cnt].x > GAME_WIDTH)	//x座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
 				{
 					player.tama[cnt].IsDraw = FALSE;	//描画終了
 				}
@@ -2002,6 +2003,34 @@ VOID MY_PLAY_DRAW(VOID)
 				{
 					//player.tama[cnt].x -= player.tama[cnt].speed;(書き方を下のように変えました)
 					player.tama[cnt].x = player.tama[cnt].x + player.tama[cnt].speed;	//弾を左に移動
+				}
+
+			}
+
+			if (mouse.Left_OldButton.y < player.image.y)	//左クリックを押したときの座標とプレイヤーの画像を比較
+			{
+				//弾を左に移動させる(変更)
+				if (player.tama[cnt].y < 0)		//y座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
+				{
+					player.tama[cnt].IsDraw = FALSE;	//描画終了
+				}
+				else
+				{
+					//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
+					player.tama[cnt].y = player.tama[cnt].y - player.tama[cnt].speed;	//弾を左に移動
+				}
+			}
+			else
+			{
+				//弾を右に移動させる(変更)
+				if (player.tama[cnt].y > GAME_HEIGHT)	//y座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
+				{
+					player.tama[cnt].IsDraw = FALSE;	//描画終了
+				}
+				else
+				{
+					//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
+					player.tama[cnt].y = player.tama[cnt].y + player.tama[cnt].speed;	//弾を左に移動
 				}
 
 			}

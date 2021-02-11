@@ -154,7 +154,8 @@ enum GAME_END {
 enum CHARA_SPEED {
 	CHARA_SPEED_LOW = 1,
 	CHARA_SPEED_MIDI = 2,
-	CHARA_SPEED_HIGH = 3
+	CHARA_SPEED_HIGH = 3,
+	CHARA_SPEED_MAX = 15
 };	//キャラクターのスピード
 
 enum CHARA_RELOAD {
@@ -1588,7 +1589,7 @@ VOID MY_PLAY_PROC(VOID)
 
 	//マウスを勢いよく動かすと、壁抜けするバグが発生するため、キー操作に変更してもよい
 	//[キー操作ここから](変更)
-	player.speed = 2;
+	player.speed = 8;
 	if (MY_KEY_DOWN(KEY_INPUT_W) == TRUE)
 	{
 		player.CenterY -= player.speed;
@@ -1986,6 +1987,20 @@ VOID MY_PLAY_DRAW(VOID)
 					//player.tama[cnt].x -= player.tama[cnt].speed;(書き方を下のように変えました)
 					player.tama[cnt].x = player.tama[cnt].x - player.tama[cnt].speed;	//弾を左に移動
 				}
+			}
+			else
+			{
+				//弾を右に移動させる(変更)
+				if (player.tama[cnt].x > GAME_WIDTH)		//x座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
+				{
+					player.tama[cnt].IsDraw = FALSE;	//描画終了
+				}
+				else
+				{
+					//player.tama[cnt].x -= player.tama[cnt].speed;(書き方を下のように変えました)
+					player.tama[cnt].x = player.tama[cnt].x + player.tama[cnt].speed;	//弾を左に移動
+				}
+
 			}
 
 			////弾を左に移動させる(変更)
@@ -2470,7 +2485,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 	player.image.y = GAME_HEIGHT / 2 - player.image.height / 2;		//上下中央揃え
 	player.CenterX = player.image.x + player.image.width / 2;		//画像の横の中心を探す
 	player.CenterY = player.image.y + player.image.height / 2;		//画像の縦の中心を探す
-	player.speed = CHARA_SPEED_HIGH;								//スピードを設定
+	player.speed = CHARA_SPEED_MAX;								//スピードを設定
 
 	//赤弾の画像を分割する
 	int tamaRedRes = LoadDivGraph(
@@ -2539,7 +2554,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 		player.tama[cnt].nowImageKind = 0;
 
 		//弾のスピードを設定する(変更)
-		player.tama[cnt].speed = CHARA_SPEED_HIGH;
+		player.tama[cnt].speed = CHARA_SPEED_MAX;
 	}
 
 	//マップの画像を分割する

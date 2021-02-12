@@ -1252,6 +1252,19 @@ VOID MY_CHOICE(VOID)
 //ステージ選択画面の処理
 VOID MY_CHOICE_PROC(VOID)
 {
+	//プレイ画面で使用します
+	//プレイヤーの中心位置を計算する
+	player.CenterX = startPt.x;
+	player.CenterY = startPt.y;
+
+	//プレイヤーの画像の位置を設定する
+	player.image.x = player.CenterX;
+	player.image.y = player.CenterY;
+
+	//プレイヤー(反転)の画像の位置を設定する
+	playerback.image.x = player.image.x;
+	playerback.image.y = player.image.y;
+
 	//エスケープキーが押されたとき終了
 	if (MY_KEY_DOWN(KEY_INPUT_ESCAPE))
 	{

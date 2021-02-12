@@ -111,8 +111,8 @@
 #define MAP_DIV_HEIGHT		120	//画像を分割する高さサイズ(元は64)
 #define MAP_DIV_TATE		16	//画像を縦に分割する数(元は10)
 #define MAP_DIV_YOKO		9	//画像を横に分割する数(元は4)
-//#define MAP_DIV_NUM	MAP_DIV_TATE * MAP_DIV_YOKO	//画像を分割する総数
-#define MAP_DIV_NUM			9	//画像を分割する総数
+#define MAP_DIV_NUM	MAP_DIV_TATE * MAP_DIV_YOKO	//画像を分割する総数
+//#define MAP_DIV_NUM			9	//画像を分割する総数
 
 //エラーメッセージ
 #define START_ERR_TITLE		TEXT("スタート位置エラー")
@@ -353,15 +353,15 @@ MUSIC BGM_FAIL;		//フォールトのBGM
 
 GAME_MAP_KIND mapData[GAME_MAP_TATE_MAX][GAME_MAP_YOKO_MAX]{
 	//  0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5
-		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 0
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 1
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 2
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 3
-		k,t,t,g,t,t,t,t,t,t,t,t,s,t,t,k,	// 4
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 5
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 6
-		k,t,t,t,t,t,t,t,t,t,t,t,t,t,t,k,	// 7
-		k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,k,	// 8
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 0
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 1
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 2
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 3
+		t,t,t,g,t,t,t,t,t,t,t,t,s,t,t,t,	// 4
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 5
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 6
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 7
+		t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,t,	// 8
 };	//ゲームのマップ
 
 //ゲームマップの初期化
@@ -1890,18 +1890,18 @@ VOID MY_PLAY_DRAW(VOID)
 		}
 	}
 
-	for (int tate = 0; tate < GAME_MAP_TATE_MAX; tate++)
-	{
-		for (int yoko = 0; yoko < GAME_MAP_YOKO_MAX; yoko++)
-		{
-			//マップを描画
-			DrawGraph(
-				map[tate][yoko].x,
-				map[tate][yoko].y,
-				mapChip.handle[map[tate][yoko].kind],
-				TRUE);
-		}
-	}
+	//for (int tate = 0; tate < GAME_MAP_TATE_MAX; tate++)
+	//{
+	//	for (int yoko = 0; yoko < GAME_MAP_YOKO_MAX; yoko++)
+	//	{
+	//		//マップを描画(しないに変更)
+	//		DrawGraph(
+	//			map[tate][yoko].x,
+	//			map[tate][yoko].y,
+	//			mapChip.handle[map[tate][yoko].kind],
+	//			TRUE);
+	//	}
+	//}
 
 	/*(変更削除)
 	//当たり判定の描画（デバッグ用）
@@ -1928,7 +1928,7 @@ VOID MY_PLAY_DRAW(VOID)
 	DrawFormatString(150, 0, GetColor(255, 255, 255), "X座標：%d, Y座標：%d", mouse.Point.x, mouse.Point.y);
 
 	//ゴールの描画（デバッグ用）
-	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(255, 255, 0), TRUE);
+	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(0, 0, 255), TRUE);
 
 	//プレイヤーを描画する(マウスの位置によって左向きと右向きを設定)
 	if (mouse.Point.x < player.image.x)

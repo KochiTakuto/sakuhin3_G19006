@@ -133,7 +133,7 @@ enum GAME_MAP_KIND
 	n = -1,	//(NONE)未定
 	k = 0,	//壁
 	t = 9,	//通路
-	s = 5,	//スタート
+	s = -1,	//スタート
 	g = 3	//ゴール
 };	//マップの種類
 
@@ -1890,18 +1890,18 @@ VOID MY_PLAY_DRAW(VOID)
 		}
 	}
 
-	//for (int tate = 0; tate < GAME_MAP_TATE_MAX; tate++)
-	//{
-	//	for (int yoko = 0; yoko < GAME_MAP_YOKO_MAX; yoko++)
-	//	{
-	//		//マップを描画(しないに変更)
-	//		DrawGraph(
-	//			map[tate][yoko].x,
-	//			map[tate][yoko].y,
-	//			mapChip.handle[map[tate][yoko].kind],
-	//			TRUE);
-	//	}
-	//}
+	for (int tate = 0; tate < GAME_MAP_TATE_MAX; tate++)
+	{
+		for (int yoko = 0; yoko < GAME_MAP_YOKO_MAX; yoko++)
+		{
+			//マップを描画(しないに変更すると当たり判定だけ残るのでやめました)
+			DrawGraph(
+				map[tate][yoko].x,
+				map[tate][yoko].y,
+				mapChip.handle[map[tate][yoko].kind],
+				TRUE);
+		}
+	}
 
 	/*(変更削除)
 	//当たり判定の描画（デバッグ用）

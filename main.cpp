@@ -73,6 +73,7 @@
 #define TAMA_GREEN_PATH			TEXT(".\\IMAGE\\TAMA\\green.png")	//青弾の画像
 #define TAMA_BLUE_PATH			TEXT(".\\IMAGE\\TAMA\\blue.png")	//緑弾の画像
 #define TAMA_YELLOW_PATH		TEXT(".\\IMAGE\\TAMA\\yellow.png")	//黄弾の画像
+#define TAMA_BUBBLE_PATH		TEXT(".\\IMAGE\\TAMA\\bubble_shot.png")		//泡弾の画像
 
 #define TAMA_DIV_WIDTH		16	//画像を分割する幅サイズ
 #define TAMA_DIV_HEIGHT		16	//画像を分割する高さサイズ
@@ -87,7 +88,7 @@
 
 //音楽のパス
 #define MUSIC_BGM_PATH			TEXT(".\\MUSIC\\海賊達の海.mp3")			//BGM
-#define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\ショット音.mp3")			//ショット音
+#define MUSIC_PLAYER_SHOT_PATH	TEXT(".\\MUSIC\\泡05.mp3")					//ショット音
 
 #define MUSIC_CLICK_PATH		TEXT(".\\MUSIC\\決定、ボタン押下29.mp3")	//クリック音
 
@@ -2007,33 +2008,32 @@ VOID MY_PLAY_DRAW(VOID)
 
 			}
 
-			if (mouse.Left_OldButton.y < player.image.y)	//左クリックを押したときの座標とプレイヤーの画像を比較
-			{
-				//弾を左に移動させる(変更)
-				if (player.tama[cnt].y < 0)		//y座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
-				{
-					player.tama[cnt].IsDraw = FALSE;	//描画終了
-				}
-				else
-				{
-					//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
-					player.tama[cnt].y = player.tama[cnt].y - player.tama[cnt].speed;	//弾を左に移動
-				}
-			}
-			else
-			{
-				//弾を右に移動させる(変更)
-				if (player.tama[cnt].y > GAME_HEIGHT)	//y座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
-				{
-					player.tama[cnt].IsDraw = FALSE;	//描画終了
-				}
-				else
-				{
-					//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
-					player.tama[cnt].y = player.tama[cnt].y + player.tama[cnt].speed;	//弾を左に移動
-				}
-
-			}
+			//if (mouse.Left_OldButton.y < player.image.y)	//左クリックを押したときの座標とプレイヤーの画像を比較
+			//{
+			//	//弾を左に移動させる(変更)
+			//	if (player.tama[cnt].y < 0)		//y座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
+			//	{
+			//		player.tama[cnt].IsDraw = FALSE;	//描画終了
+			//	}
+			//	else
+			//	{
+			//		//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
+			//		player.tama[cnt].y = player.tama[cnt].y - player.tama[cnt].speed;	//弾を左に移動
+			//	}
+			//}
+			//else
+			//{
+			//	//弾を右に移動させる(変更)
+			//	if (player.tama[cnt].y > GAME_HEIGHT)	//y座標がゲーム幅より大きいときは描画しないってこと、違うなら弾移動させてる
+			//	{
+			//		player.tama[cnt].IsDraw = FALSE;	//描画終了
+			//	}
+			//	else
+			//	{
+			//		//player.tama[cnt].y -= player.tama[cnt].speed;(書き方を下のように変えました)
+			//		player.tama[cnt].y = player.tama[cnt].y + player.tama[cnt].speed;	//弾を左に移動
+			//	}
+			//}
 
 			////弾を左に移動させる(変更)
 			//if (player.tama[cnt].x < 0)//x座標が0より小さいときは描画しないってこと、違うなら弾移動させてる
@@ -2521,7 +2521,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 
 	//赤弾の画像を分割する
 	int tamaRedRes = LoadDivGraph(
-		TAMA_RED_PATH,										//赤弾のパス
+		TAMA_BUBBLE_PATH,									//赤弾のパス
 		TAMA_DIV_NUM, TAMA_DIV_TATE, TAMA_DIV_YOKO,			//赤弾を分割する数
 		TAMA_DIV_WIDTH, TAMA_DIV_HEIGHT,					//画像を分割するの幅と高さ
 		&player.tama[0].handle[0]);							//分割した画像が入るハンドル
@@ -2542,7 +2542,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 	if (tamaRedRes == -1)
 	{
 		//エラーメッセージ表示
-		MessageBox(GetMainWindowHandle(), TAMA_RED_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
+		MessageBox(GetMainWindowHandle(), TAMA_BUBBLE_PATH, IMAGE_LOAD_ERR_TITLE, MB_OK);
 		return FALSE;
 	}
 
@@ -2553,7 +2553,7 @@ BOOL MY_LOAD_IMAGE(VOID)
 	for (int cnt = 0; cnt < TAMA_MAX; cnt++)
 	{
 		//パスをコピー
-		strcpyDx(player.tama[cnt].path, TEXT(TAMA_RED_PATH));
+		strcpyDx(player.tama[cnt].path, TEXT(TAMA_BUBBLE_PATH));
 
 		for (int i_num = 0; i_num < TAMA_DIV_NUM; i_num++)
 		{

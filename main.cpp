@@ -67,7 +67,7 @@
 
 //弾の設定
 #define TAMA_CHANGE_MAX		 5	//5フレーム目で弾の画像を変える
-#define TAMA_MAX			16	//最大16発まで
+#define TAMA_MAX			42	//最大42発まで(元は16発)
 
 #define TAMA_RED_PATH			TEXT(".\\IMAGE\\TAMA\\red.png")		//赤弾の画像
 #define TAMA_GREEN_PATH			TEXT(".\\IMAGE\\TAMA\\green.png")	//青弾の画像
@@ -162,7 +162,7 @@ enum CHARA_SPEED {
 enum CHARA_RELOAD {
 	CHARA_RELOAD_LOW = 60,
 	CHARA_RELOAD_MIDI = 30,
-	CHARA_RELOAD_HIGH = 15
+	CHARA_RELOAD_HIGH = 1,		//元は15
 };	//キャラクターのリロード
 
 //int型のPOINT構造体
@@ -1836,7 +1836,6 @@ VOID MY_PLAY_PROC(VOID)
 			player.ShotReLoadCnt = 0;
 			player.CanShot = TRUE;		//再びショットできる
 		}
-
 		player.ShotReLoadCnt++;	//リロードする
 	}
 

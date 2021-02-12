@@ -1943,7 +1943,7 @@ VOID MY_PLAY_DRAW(VOID)
 	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(0, 0, 255), TRUE);
 
 	//プレイヤーを描画する(マウスの位置によって左向きと右向きを設定)
-	if (mouse.Point.x < player.image.x)
+	if (mouse.Point.x < player.CenterX)
 	{
 		DrawGraph(player.image.x, player.image.y, player.image.handle, TRUE);
 	}

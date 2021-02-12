@@ -1622,34 +1622,34 @@ VOID MY_PLAY_PROC(VOID)
 		player.CenterX += player.speed;
 	}
 
-	//(変更削除)
-	//画面内にマウスがいれば
-	/*if (mouse.Point.x >= 0 && mouse.Point.x <= GAME_WIDTH
-		&& mouse.Point.y >= 0 && mouse.Point.y <= GAME_HEIGHT)
-	{
-		//マウスの当たる前の位置から、現在位置の差がこの数値以内なら、動ける
-		int MoveValue = 100;
+	////(変更削除)
+	////画面内にマウスがいれば
+	//if (mouse.Point.x >= 0 && mouse.Point.x <= GAME_WIDTH
+	//	&& mouse.Point.y >= 0 && mouse.Point.y <= GAME_HEIGHT)
+	//{
+	//	//マウスの当たる前の位置から、現在位置の差がこの数値以内なら、動ける
+	//	int MoveValue = 100;
 
-		//マウスの移動量が少ないときに、移動させる
-		if (abs(player.collBeforePt.x - mouse.Point.x) < MoveValue
-			&& abs(player.collBeforePt.y - mouse.Point.y) < MoveValue)
-		{
-			//プレイヤーの中心位置を設定する
-			player.CenterX = mouse.Point.x;
-			player.CenterY = mouse.Point.y;
-		}
-		else
-		{
-			//プレイヤーの中心位置を設定する
-			player.CenterX = player.collBeforePt.x;
-			player.CenterY = player.collBeforePt.y;
+	//	//マウスの移動量が少ないときに、移動させる
+	//	if (abs(player.collBeforePt.x - mouse.Point.x) < MoveValue
+	//		&& abs(player.collBeforePt.y - mouse.Point.y) < MoveValue)
+	//	{
+	//		//プレイヤーの中心位置を設定する
+	//		player.CenterX = mouse.Point.x;
+	//		player.CenterY = mouse.Point.y;
+	//	}
+	//	else
+	//	{
+	//		//プレイヤーの中心位置を設定する
+	//		player.CenterX = player.collBeforePt.x;
+	//		player.CenterY = player.collBeforePt.y;
 
-			//マウスの位置を設定する
-			SetMousePoint(player.collBeforePt.x, player.collBeforePt.y);
-		}
+	//		//マウスの位置を設定する
+	//		SetMousePoint(player.collBeforePt.x, player.collBeforePt.y);
+	//	}
 
-	}
-	*/
+	//}
+	
 
 	//プレイヤーの当たり判定の設定
 	player.coll.left = player.CenterX - mapChip.width / 2 + 5;
@@ -1730,6 +1730,58 @@ VOID MY_PLAY_PROC(VOID)
 
 		return;	//強制的にエンド画面に飛ぶ
 	}
+
+	//画面左端からプレイヤーが出そうになったら戻す
+	if (player.CenterX < 0)
+	{
+		player.CenterX = 0;
+	}
+
+	//画面右端からプレイヤーが出そうになったら戻す
+	if (player.CenterX > GAME_WIDTH)
+	{
+		player.CenterX = GAME_WIDTH;
+	}
+
+	//画面上端からプレイヤーが出そうになったら戻す
+	if (player.CenterY < 0)
+	{
+		player.CenterY = 0;
+	}
+
+	//画面下端からプレイヤーが出そうになったら戻す
+	if (player.CenterY > GAME_HEIGHT)
+	{
+		player.CenterY = GAME_HEIGHT;
+	}
+
+	//お遊びプログラムなので削除
+	/*
+	//画面左端からプレイヤーが出そうになったら戻す
+	if (player.CenterX < 0)
+	{
+		player.CenterX = GAME_WIDTH;
+	}
+
+	//画面右端からプレイヤーが出そうになったら戻す
+	if (player.CenterX > GAME_WIDTH)
+	{
+		player.CenterX = 0;
+	}
+
+	//画面上端からプレイヤーが出そうになったら戻す
+	if (player.CenterY < 0)
+	{
+		player.CenterY = GAME_HEIGHT;
+	}
+
+	//画面下端からプレイヤーが出そうになったら戻す
+	if (player.CenterY > GAME_HEIGHT)
+	{
+		player.CenterY = 0;
+	}
+	*/
+
 
 	//プレイヤーが画面外に出たら
 	if (player.image.x > GAME_WIDTH || player.image.y > GAME_HEIGHT

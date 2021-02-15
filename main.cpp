@@ -560,7 +560,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			break;
 		}
 
-		MY_FPS_DRAW();		//FPSの処理[描画]
+		//MY_FPS_DRAW();		//FPSの処理[描画]
 
 		ScreenFlip();		//モニタのリフレッシュレートの速さで裏画面を再描画
 
@@ -1121,7 +1121,7 @@ VOID MY_START_DRAW(VOID)
 		DrawGraph(ImageTitleSTART.image.x, ImageTitleSTART.image.y, ImageTitleSTART.image.handle, TRUE);
 	}
 
-	DrawString(0, 0, "スタート画面", GetColor(0, 0, 0));
+	//DrawString(0, 0, "スタート画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1236,7 +1236,7 @@ VOID MY_MENU_DRAW(VOID)
 		ImageTitleROGO.angle,							//画像の回転率
 		ImageTitleROGO.image.handle, TRUE);				//画像のハンドル
 
-	DrawString(0, 0, "メニュー画面", GetColor(0, 0, 0));
+	//DrawString(0, 0, "メニュー画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1418,7 +1418,7 @@ VOID MY_CHOICE_DRAW(VOID)
 	////背景を描画
 	//DrawGraph(ImageNextButton.x, ImageNextButton.y, ImageNextButton.handle, TRUE);		//ネクストボタンの描画
 
-	DrawString(0, 0, "ステージ選択", GetColor(0, 0, 0));
+	//DrawString(0, 0, "ステージ選択", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1498,7 +1498,7 @@ VOID MY_SETUP_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageReturnButton.x, ImageReturnButton.y, ImageReturnButton.handle, TRUE);	//設定ボタンの描画
 
-	DrawString(0, 0, "設定画面", GetColor(0, 0, 0));
+	//DrawString(0, 0, "設定画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -1988,8 +1988,8 @@ VOID MY_PLAY_DRAW(VOID)
 	}
 	*/
 	
-	//マウスの位置を表示(デバック用)
-	DrawFormatString(150, 0, GetColor(255, 255, 255), "X座標：%d, Y座標：%d", mouse.Point.x, mouse.Point.y);
+	////マウスの位置を表示(デバック用)
+	//DrawFormatString(150, 0, GetColor(255, 255, 255), "X座標：%d, Y座標：%d", mouse.Point.x, mouse.Point.y);
 
 	//ゴールの描画（デバッグ用）
 	DrawBox(GoalRect.left, GoalRect.top, GoalRect.right, GoalRect.bottom, GetColor(0, 0, 255), TRUE);
@@ -2295,7 +2295,7 @@ VOID MY_END_DRAW(VOID)
 
 	}
 
-	DrawString(0, 0, "エンド画面", GetColor(0, 0, 0));
+	//DrawString(0, 0, "エンド画面", GetColor(0, 0, 0));
 	return;
 }
 
@@ -2338,7 +2338,7 @@ VOID MY_CLEAR_DRAW(VOID)
 	//背景を描画
 	DrawGraph(ImageBack[0].image.x, ImageBack[0].image.y, ImageBack[0].image.handle, TRUE);
 
-	DrawString(0, 0, "クリア画面", GetColor(0, 0, 0));
+	//DrawString(0, 0, "クリア画面", GetColor(0, 0, 0));
 	return;
 }
 
